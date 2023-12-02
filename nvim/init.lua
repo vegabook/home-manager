@@ -14,14 +14,43 @@ vim.opt.rtp:prepend(lazypath)
 -- map leader 
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true
 -- lazy plugins 
 local plugins = {
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
-  'nvim-treesitter/nvim-treesitter',
+  {
+      "nvim-treesitter/nvim-treesitter",
+      build = ":TSUpdate",
+      config = function () 
+        local configs = require("nvim-treesitter.configs")
+
+        configs.setup({
+            ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html" },
+            sync_install = false,
+            highlight = { enable = true },
+            indent = { enable = true },  
+          })
+      end
+  },
+  {
+    "https://git.sr.ht/~swaits/zellij-nav.nvim",
+    lazy = true,
+    event = "VeryLazy",
+    keys = {
+      { "<c-h>", "<cmd>ZellijNavigateLeft<cr>",  { silent = true, desc = "navigate left"  } },
+      { "<c-j>", "<cmd>ZellijNavigateDown<cr>",  { silent = true, desc = "navigate down"  } },
+      { "<c-k>", "<cmd>ZellijNavigateUp<cr>",    { silent = true, desc = "navigate up"    } },
+      { "<c-l>", "<cmd>ZellijNavigateRight<cr>", { silent = true, desc = "navigate right" } },
+    },
+    opts = {},
+  },
   'hrsh7th/nvim-cmp',
-  'github/copilot.vim'
+  'github/copilot.vim',
 }
 
 local opts = {}
@@ -29,6 +58,20 @@ local copilot_opts = {}
 
 -- setup
 require("lazy").setup(plugins, opts)
+require("nvim-tree").setup({
+  sort = {
+    sorter = "case_sensitive",
+  },
+  view = {
+    width = 30,
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
 
 -- Global settings
 vim.opt.modifiable = true
@@ -59,6 +102,9 @@ end
 function imap(shortcut, command)
   map('i', shortcut, command)
 end
+
+vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
+
 
 -- Mappings
 
