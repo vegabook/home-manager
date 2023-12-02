@@ -1,5 +1,4 @@
 -- Global settings
--- vim.opt.statusline = '=[%n]\ %F%=L\ %l/%L\ \ C\ %c\'
 vim.opt.modifiable = true
 vim.opt.number = true
 vim.opt.relativenumber = true
