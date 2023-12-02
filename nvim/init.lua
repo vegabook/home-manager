@@ -1,3 +1,35 @@
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- map leader 
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
+
+-- lazy plugins 
+local plugins = {
+  'nvim-tree/nvim-tree.lua',
+  'nvim-tree/nvim-web-devicons',
+  'nvim-treesitter/nvim-treesitter',
+  'hrsh7th/nvim-cmp',
+  'github/copilot.vim'
+}
+
+local opts = {}
+local copilot_opts = {}
+
+-- setup
+require("lazy").setup(plugins, opts)
+
 -- Global settings
 vim.opt.modifiable = true
 vim.opt.number = true

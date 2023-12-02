@@ -40,6 +40,7 @@ in
     chafa # sixel viewer
     fuse
     neovim
+    nodejs_21
     (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
