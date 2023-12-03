@@ -23,6 +23,7 @@ vim.opt.termguicolors = true
 local plugins = {
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
+  'mlochbaum/BQN',
   {
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",

@@ -1,0 +1,12 @@
+font:
+  size: 12.0
+  normal:
+    family: "BQN386 Unicode"
+    style: Regular
+  bold:
+    family: "BQN386 Unicode"
+    style: Bold
+  italic:
+    family: "BQN386 Unicode"
+    style: Italic
+
