@@ -1,0 +1,5 @@
+theme = "heisenberg"
+
+[editor]
+line-number = "relative"
+mouse = false
