@@ -52,6 +52,10 @@ local plugins = {
   },
   'hrsh7th/nvim-cmp',
   'github/copilot.vim',
+  {
+    'nvim-telescope/telescope.nvim', branch = '0.1.x',
+      dependencies = { 'nvim-lua/plenary.nvim' }
+  }
 }
 
 local opts = {}
