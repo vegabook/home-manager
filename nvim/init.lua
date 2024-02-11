@@ -21,6 +21,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 -- lazy plugins 
 local plugins = {
+  'EdenEast/nightfox.nvim',
   'rockerBOO/boo-colorscheme-nvim',
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
