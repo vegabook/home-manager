@@ -4,6 +4,7 @@ local config = {}
 config.font = wezterm.font 'Iosevka Nerd Font'
 config.font_size = 17.0 
 
+config.enable_tab_bar = false
 config.color_scheme = 'Github'
 config.window_background_gradient = {
   colors = { 'deeppink', 'gold' },
