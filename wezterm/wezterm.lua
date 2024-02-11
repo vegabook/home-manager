@@ -7,7 +7,7 @@ config.font_size = 17.0
 config.enable_tab_bar = false
 config.color_scheme = 'Github'
 config.window_background_gradient = {
-  colors = { 'deeppink', 'gold' },
+  colors = { 'hotpink', 'gold' },
   orientation = {
     Radial = {
       -- Specifies the x coordinate of the center of the circle,
