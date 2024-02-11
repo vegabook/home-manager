@@ -41,7 +41,7 @@ in
     fuse
     neovim
     nodejs_21
-    (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    (nerdfonts.override { fonts = [ "FantasqueSansMono" "3270" "HeavyData"]; })
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -118,57 +118,9 @@ in
     enable = true;
   };
 
-  #programs.neovim = {
-  #  enable = true;
-  #  defaultEditor = true;
-  #  viAlias = true;
-  #  vimAlias = true;
-  #  vimdiffAlias = true;
-  #  plugins = with pkgs.vimPlugins; [
-  #    nvim-lspconfig
-  #    nvim-treesitter.withAllGrammars
-  #    gruvbox-material
-  #    gruvbox
-  #    nerdtree
-  #    copilot-vim
-  #    lush-nvim
-  #    zenbones-nvim
-  #    indent-blankline-nvim
-  #    {
-  #      plugin = toggleterm-nvim;
-  #      type = "lua";
-  #      config = builtins.readFile(./neovim/plugins/toggleterm.lua);
-  #    }
-  #  ];
-#
-#    extraConfig = ''
-#      set expandtab
-#      set nocursorline
-#      syntax on
-#      let mapleader=","
-#      nmap <leader>ne :NERDTree<cr>
-#      nmap <Left> gT
-#      nmap <Right> gt
-#      map <Leader>nn <plug>NERDTreeTabsToggle<CR>      
-#      set statusline=[%n]\ %F%=L\ %l/%L\ \ C\ %c\ 
-#      set modifiable
-#      set number
-#      set background=dark
-#      set termguicolors
-#      autocmd BufEnter *html* set tabstop=2|set shiftwidth=2
-#      autocmd BufEnter *.nix set tabstop=2|set shiftwidth=2
-#      autocmd BufEnter *.ex set tabstop=2|set shiftwidth=2
-#      autocmd BufEnter *.exs set tabstop=2|set shiftwidth=2
-#      autocmd BufEnter *.eex set tabstop=2|set shiftwidth=2
-#      autocmd BufEnter *.heex set tabstop=2|set shiftwidth=2
-#      autocmd BufEnter *.c set tabstop=2|set shiftwidth=2
-#      autocmd BufEnter *.py set tabstop=4|set shiftwidth=4|colorscheme gruvbox
-#      autocmd BufEnter *.r set tabstop=4|set shiftwidth=4|colorscheme nordbones
-#      autocmd BufEnter *js* set tabstop=2|set shiftwidth=2
-#      autocmd FileType python nnoremap <silent> <C-\> \| :w! \| :silent !zellij run -c -f -- ipython --nosep -i % \|\| echo -e "\e[41mFailed...\e[0m" && exit<CR>
-##      autocmd FileType python inoremap <silent> <C-\> <esc> \| :w! \| :silent !zellij run -c -f -- ipython --nosep -i % \|\| echo -e "\e[41mFailed...\e[0m" && exit<CR>
-#    '';
-  #};
+  programs.wezterm = {
+    enable = true;
+  };
 
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -178,16 +130,16 @@ in
       source = ./nvim;
       recursive = true;
     };  
-    "./.config/alacritty" = {
-      source = ./alacritty;
-      recursive = true;
-    };  
     "./.config/helix" = {
       source = ./helix;
       recursive = true;
     };  
     "./.config/zellij" = {
       source = ./zellij;
+      recursive = true;
+    };  
+    "./.config/wezterm" = {
+      source = ./wezterm;
       recursive = true;
     };  
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
