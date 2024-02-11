@@ -141,7 +141,7 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 2
       vim.opt.tabstop = 2
-      vim.cmd.colorscheme('sunset_cloud')
+      vim.cmd.colorscheme('forest_stream')
     end
   }
 )
