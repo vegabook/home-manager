@@ -126,7 +126,7 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 4
       vim.opt.tabstop = 4
-      vim.cmd.colorscheme('boo')
+      vim.cmd.colorscheme('crimson_moonslight")
     end
   }
 )
