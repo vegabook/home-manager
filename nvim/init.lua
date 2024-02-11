@@ -21,6 +21,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 -- lazy plugins 
 local plugins = {
+  'rockerBOO/boo-colorscheme-nvim',
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'mlochbaum/BQN',
@@ -125,6 +126,22 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 4
       vim.opt.tabstop = 4
+      vim.cmd.colorscheme('boo')
+    end
+  }
+)
+
+
+vim.api.nvim_create_autocmd(
+  {
+      "BufEnter",
+  },
+  {
+    pattern = "*.ex",
+    callback = function()
+      vim.opt.shiftwidth = 2
+      vim.opt.tabstop = 2
+      vim.cmd.colorscheme('sunset_cloud')
     end
   }
 )
