@@ -103,6 +103,9 @@ vim.g.mapleader = ","
 -- Mappings
 
 vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
+vim.keymap.set('n', '<Right>', ':tabn<cr>')
+vim.keymap.set('n', '<Left>', ':tabp<cr>')
+
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
