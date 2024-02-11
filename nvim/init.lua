@@ -63,6 +63,7 @@ local opts = {}
 local copilot_opts = {}
 
 -- setup
+--
 require("lazy").setup(plugins, opts)
 require("nvim-tree").setup({
   actions = {
