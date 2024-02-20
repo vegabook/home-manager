@@ -145,6 +145,7 @@ vim.api.nvim_create_autocmd(
       vim.cmd.colorscheme('forest_stream')
     end
   }
+)
 
 vim.api.nvim_create_autocmd(
   {
