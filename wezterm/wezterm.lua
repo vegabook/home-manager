@@ -6,6 +6,7 @@ config.font_size = 17.0
 
 config.enable_tab_bar = false
 config.color_scheme = 'Github'
+config.window_close_confirmation = 'NeverPrompt'
 config.window_background_gradient = {
   colors = { 'hotpink', 'gold' },
   orientation = {
