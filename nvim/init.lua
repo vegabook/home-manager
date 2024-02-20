@@ -133,6 +133,18 @@ vim.api.nvim_create_autocmd(
   }
 )
 
+vim.api.nvim_create_autocmd(
+  {
+      "BufEnter",
+  },
+  {
+    pattern = "*.exs",
+    callback = function()
+      vim.opt.shiftwidth = 2
+      vim.opt.tabstop = 2
+      vim.cmd.colorscheme('forest_stream')
+    end
+  }
 
 vim.api.nvim_create_autocmd(
   {
@@ -143,7 +155,7 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 2
       vim.opt.tabstop = 2
-      vim.cmd.colorscheme('forest_stream')
+      vim.cmd.colorscheme('boo')
     end
   }
 )
