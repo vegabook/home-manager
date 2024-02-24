@@ -31,5 +31,27 @@ config.window_background_gradient = {
   },
 }
 
+-- more examples here for communicating with wezterm to change in place
+-- https://wezfurlong.org/wezterm/config/lua/window/set_config_overrides.html
+-- https://wezfurlong.org/wezterm/recipes/passing-data.html#user-vars
+
+wezterm.on('toggle-opacity', function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  if not overrides.window_background_opacity then
+    overrides.window_background_opacity = 0.5
+  else
+    overrides.window_background_opacity = nil
+  end
+  window:set_config_overrides(overrides)
+end)
+
+config.keys = {
+  {
+    key = 'B',
+    mods = 'CTRL',
+    action = wezterm.action.EmitEvent 'toggle-opacity',
+  },
+}
+
 return config
 
