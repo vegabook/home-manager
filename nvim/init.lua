@@ -120,12 +120,14 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 -- Buffer autocmds
 --
 local function analyzeBufferContents()
-  local lines = vim.api.nvim_buf_get_lines(0, 0, 10, false)
+  local lines = vim.api.nvim_buf_get_lines(0, 0, 5, false)
   -- Example: Check if a specific string exists in the file
   for _, line in ipairs(lines) do
-    if line:find("NVIMCOLOURSCHEME") then
+    if line:find("colorscheme") then
+      local pattern = "colorscheme ([%w-_]+)"
+      local match = string.match(line, pattern)
       -- Perform actions like setting options, calling functions, etc.
-      vim.cmd.colorscheme('revolutions')
+      vim.cmd.colorscheme(match)
       break
     end
   end
