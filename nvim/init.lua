@@ -23,6 +23,7 @@ vim.opt.termguicolors = true
 local plugins = {
   'EdenEast/nightfox.nvim',
   'rockerBOO/boo-colorscheme-nvim',
+  'shaunsingh/moonlight.nvim',
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'mlochbaum/BQN',
