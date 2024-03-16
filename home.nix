@@ -64,7 +64,6 @@ in
 
   programs.tmux = {
     enable = true;
-    enableMouse = true;
   };
 
 
