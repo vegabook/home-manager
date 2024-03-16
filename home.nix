@@ -62,6 +62,12 @@ in
     userEmail = "thomas@scendance.fr";
   };
 
+  programs.tmux = {
+    enable = true;
+    enableMouse = true;
+  };
+
+
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -142,6 +148,10 @@ in
       source = ./wezterm;
       recursive = true;
     };  
+    "./.tmux.conf" = {
+      source = ./tmux/dot_tmux.conf;
+      recursive = false;
+    };
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
