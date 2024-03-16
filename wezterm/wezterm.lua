@@ -90,6 +90,17 @@ config.keys = {
     mods = 'CTRL',
     action = wezterm.action.EmitEvent 'toggle-opacity',
   },
+  {
+    key = 'RightArrow',
+    mods = 'CTRL|SHIFT', 
+    action = wezterm.action.DisableDefaultAssignment,
+  },
+  {
+    key = 'LeftArrow',
+    mods = 'CTRL|SHIFT', 
+    action = wezterm.action.DisableDefaultAssignment,
+  },
+
 }
 
 return config
