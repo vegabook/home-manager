@@ -72,10 +72,10 @@ in
     enable = true;
   };
 
-  programs.zsh = {
-    enable = isDarwin;
+  programs.zsh = if isDarwin then {
+    enable = true;
     autocd = true;
-    enableAutosuggestions = true;
+    autosuggestions.enable = true;
     enableCompletion = true;
     shellAliases = {
       ls = "ls -alG";
@@ -86,17 +86,18 @@ in
     initExtra = ''
       make_superscript () { sed 'y/0123456789/⁰¹²³⁴⁵⁶⁷⁸⁹/' <<< $SHLVL; };
       direnv_yes () { env | grep DIRENV_DIR | wc -l | sed 's/[0 ]//g'; };
-      echoer () { export PROMPT="%f%F{yellow}$(direnv_yes)%f%F{red}$(make_superscript)%f%F{green}%n@%m %F{$016}%~%f %F{green}❯%f " };
+      nixshell_yes () { env | grep IN_NIX_SHELL | wc -l | sed 's/[0 ]//g'; };
+      echoer () { export PROMPT="%f%F{yellow}$(nixshell_yes)%f%F{red}$(make_superscript)%f%F{green}%n@%m %F{$016}%~%f %F{green}❯%f " };
       precmd_functions+=(echoer);
       CLICOLOR=1;
       PATH=${homeDirectory}/scripts:$PATH;
       NIXPKGS_ALLOW_UNFREE=1;
       setopt rmstarsilent
     '';
+  } else {
+    enable = false;
   };
-      #eval "$(/opt/homebrew/bin/brew shellenv)";
-
-  # TODO fix the bashrc prompt
+    
   
   programs.zellij = {
     enable = true;
@@ -109,6 +110,11 @@ in
   };
 
   programs.fzf = {
+    enable = true;
+  };
+
+  # github cli 
+  programs.gh = {
     enable = true;
   };
 
@@ -135,7 +141,17 @@ in
 
   programs.bash = {
     enable = isLinux;
+    initExtra = ''
+      make_superscript_shlvl () { sed 'y/0123456789/⁰¹²³⁴⁵⁶⁷⁸⁹/' <<< $SHLVL; };
+      make_subscript_shlvl () { sed 'y/0123456789/₀₁₂₃₄₅₆₇₈₉/' <<< $SHLVL; };
+      direnv_yes () { env | grep DIRENV_DIR | wc -l | sed 's/[0 ]//g'; };
+      nixshell_yes () { env | grep IN_NIX_SHELL | wc -l | sed 's/[1-9]/ₙᵢₓ/g; s/0//g'; };
+      echoer () { export PS1='\033[1;31m$(make_superscript_shlvl)\033[1;33m$(nixshell_yes)\033[0m \u@\h \w ❯ '; };
+      export NIXPKGS_ALLOW_UNFREE=1;
+      export PROMPT_COMMAND=echoer;
+    '';
   };
+      #echoer () { echo '%f%F{yellow}$(nixshell_yes)%f%F{red}$(make_superscript_shlvl)%f%F{green}%n@%m %F{$016}%~%f %F{green}❯%f ' };
 
   nix = {
     package = pkgs.nix;
@@ -166,15 +182,15 @@ in
       source = ./tmux/dot_tmux.conf;
       recursive = false;
     };
-    "./.bashrc" = {
-      source = ./bashrc/bashrc;
-      recursive = false;
-    };
-
-    "./.profile" = {
-      source = ./profile/profile;
-      recursive = false;
-    };
+    #"./.bashrc" = {
+    #  source = ./bashrc/bashrc;
+    #  recursive = false;
+    #};
+#
+#    "./.profile" = {
+#      source = ./profile/profile;
+#      recursive = false;
+#    };
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
