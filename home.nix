@@ -72,7 +72,6 @@ in
     enable = true;
   };
 
-
   programs.zsh = {
     enable = isDarwin;
     autocd = true;
@@ -127,6 +126,7 @@ in
 
   programs.zoxide = {
     enable = true;
+    enableBashIntegration = isLinux;
   };
 
   programs.wezterm = {
@@ -157,6 +157,7 @@ in
       source = ./tmux/dot_tmux.conf;
       recursive = false;
     };
+
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
