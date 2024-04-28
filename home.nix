@@ -76,7 +76,7 @@ in
   programs.zsh = {
     enable = isDarwin;
     autocd = true;
-    autosuggestion.enable = true;
+    enableAutosuggestions = true;
     enableCompletion = true;
     shellAliases = {
       ls = "ls -alG";
