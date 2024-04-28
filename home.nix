@@ -89,7 +89,7 @@ in
       echoer () { export PROMPT="%f%F{yellow}$(direnv_yes)%f%F{red}$(make_superscript)%f%F{green}%n@%m %F{$016}%~%f %F{green}❯%f " };
       precmd_functions+=(echoer);
       CLICOLOR=1;
-      PATH=/Users/mmai/scripts:$PATH;
+      PATH=${homeDirectory}/scripts:$PATH;
       NIXPKGS_ALLOW_UNFREE=1;
       setopt rmstarsilent
     '';
