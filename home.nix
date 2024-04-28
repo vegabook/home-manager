@@ -12,6 +12,7 @@ let
   username = builtins.getEnv "USER";
   homeDirectory = builtins.getEnv "HOME";
   isLinux = builtins.currentSystem == "x86_64-linux" || builtins.currentSystem == "aarch64-linux";
+  isDarwin = builtins.currentSystem == "aarch64-darwin";
 in
 
 {
@@ -45,7 +46,7 @@ in
     chafa # sixel viewer
     fuse
     neovim
-    nodejs_21
+    nodejs
     (nerdfonts.override { fonts = [ "FantasqueSansMono" "3270" "HeavyData"]; })
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
@@ -73,9 +74,9 @@ in
 
 
   programs.zsh = {
-    enable = true;
+    enable = isDarwin;
     autocd = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     shellAliases = {
       ls = "ls -alG";
