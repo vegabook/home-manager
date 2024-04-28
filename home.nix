@@ -9,13 +9,18 @@ let
       rev = rev;
     };
   };
+  username = builtins.getEnv "USER";
+  homeDirectory = builtins.getEnv "HOME";
+  isLinux = builtins.currentSystem == "x86_64-linux" || builtins.currentSystem == "aarch64-linux";
 in
 
 {
+  # are we on Linux?
+  targets.genericLinux.enable = isLinux;
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "mmai";
-  home.homeDirectory = "/Users/mmai";
+  home.username = username;
+  home.homeDirectory = homeDirectory;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
