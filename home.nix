@@ -140,17 +140,7 @@ in
 
   programs.bash = {
     enable = true;
-    initExtra = ''
-      make_superscript_shlvl () { sed 'y/0123456789/⁰¹²³⁴⁵⁶⁷⁸⁹/' <<< $SHLVL; };
-      make_subscript_shlvl () { sed 'y/0123456789/₀₁₂₃₄₅₆₇₈₉/' <<< $SHLVL; };
-      direnv_yes () { env | grep DIRENV_DIR | wc -l | sed 's/[0 ]//g'; };
-      nixshell_yes () { env | grep IN_NIX_SHELL | wc -l | sed 's/[1-9]/ₙᵢₓ/g; s/0//g'; };
-      echoer () { export PS1='\033[1;31m$(make_superscript_shlvl)\033[1;33m$(nixshell_yes)\033[0m \033[0;37m\u@\h\033[0m \033[0;30m\w\033[0m \033[1;37m❯\033[0m '; };
-      export NIXPKGS_ALLOW_UNFREE=1;
-      export PROMPT_COMMAND=echoer;
-    '';
   };
-      #echoer () { echo '%f%F{yellow}$(nixshell_yes)%f%F{red}$(make_superscript_shlvl)%f%F{green}%n@%m %F{$016}%~%f %F{green}❯%f ' };
 
   nix = {
     package = pkgs.nix;
