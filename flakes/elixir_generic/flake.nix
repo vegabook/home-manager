@@ -49,6 +49,9 @@
 
             # enables history for IEx
             export ERL_AFLAGS="-kernel shell_history enabled -kernel shell_history_path '\"$PWD/.erlang-history\"'"
+
+            # Phoenix
+            mix archive.install hex phx_new
           '';
         };
       }
