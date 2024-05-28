@@ -40,6 +40,7 @@
             python311Packages.gql
             python311Packages.pathlib2
             python311Packages.pip
+            python311Packages.pyarrow
           ];
         };
       });
