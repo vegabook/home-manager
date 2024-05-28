@@ -18,14 +18,21 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 -- set termguicolors to enable highlight groups
-vim.opt.termguicolors = true
+if vim.fn.has("termguicolors") then
+  vim.opt.termguicolors = true
+end
 -- lazy plugins 
 local plugins = {
   'EdenEast/nightfox.nvim',
-  'rockerBOO/boo-colorscheme-nvim',
+--  'rockerBOO/boo-colorscheme-nvim',
+  'foxoman/vim-helix',
   'shaunsingh/moonlight.nvim',
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
+  'nyoom-engineering/oxocarbon.nvim',
+  'mathofprimes/nightvision-nvim',
+  'ribru17/bamboo.nvim',
+  'rockerBOO/boo-colorscheme-nvim',
   'mlochbaum/BQN',
   {
     'cameron-wags/rainbow_csv.nvim',
@@ -148,7 +155,8 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 4
       vim.opt.tabstop = 4
-      vim.cmd.colorscheme('crimson_moonlight')
+      vim.opt.background = 'dark'
+      vim.cmd.colorscheme('oxocarbon')
     end
   }
 )
@@ -162,12 +170,15 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 2
       vim.opt.tabstop = 2
-      vim.cmd.colorscheme('forest_stream')
+      vim.opt.background = 'dark'
+      vim.g.nv_contrast = 'medium'
+      vim.cmd.colorscheme('nightvision')
+
     end
   }
 )
 
-vim.api.nvim_create_autocmd(
+ vim.api.nvim_create_autocmd(
   {
       "BufEnter", "BufRead",
   },
@@ -176,7 +187,11 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 2
       vim.opt.tabstop = 2
-      vim.cmd.colorscheme('boo')
+      vim.opt.background = 'dark'
+      require("boo-colorscheme").use({
+	italic = true, -- toggle italics
+	theme = "boo"
+      })
     end
   }
 )
@@ -199,7 +214,7 @@ end
 
 vim.api.nvim_create_autocmd(
   {
-      "BufEnter",
+      "BufEnter", "BufRead"
   },
   {
     callback = analyzeBufferContents
