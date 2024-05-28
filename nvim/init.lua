@@ -141,7 +141,7 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
 vim.api.nvim_create_autocmd(
   {
-      "BufEnter",
+      "BufEnter", "BufRead",
   },
   {
     pattern = "*.py",
@@ -155,7 +155,7 @@ vim.api.nvim_create_autocmd(
 
 vim.api.nvim_create_autocmd(
   {
-      "BufEnter",
+      "BufEnter", "BufRead",
   },
   {
     pattern = "*.exs",
@@ -169,7 +169,7 @@ vim.api.nvim_create_autocmd(
 
 vim.api.nvim_create_autocmd(
   {
-      "BufEnter",
+      "BufEnter", "BufRead",
   },
   {
     pattern = "*.ex",
