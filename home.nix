@@ -10,9 +10,11 @@ let
     };
   };
   username = builtins.getEnv "USER";
+  path = builtins.getEnv "PATH";
   homeDirectory = builtins.getEnv "HOME";
   isLinux = builtins.currentSystem == "x86_64-linux" || builtins.currentSystem == "aarch64-linux";
   isDarwin = builtins.currentSystem == "aarch64-darwin";
+  hostname = builtins.getEnv "HOSTNAME";
 in
 
 {
@@ -204,12 +206,11 @@ in
   # if you don't want to manage your shell through Home Manager.
   home.sessionVariables = {
     # EDITOR = "emacs";
-    DIRENV_WARN_TIMEOUT="600s";
     NIXPKGS_ALLOW_UNFREE=1;
     NIX_SHELL_PRESERVE_PROMPT=1;
   };
 
-  # Let Home Manager install and manage itself.
-
-
+  home.shellAliases = { 
+    vim = "nvim"; 
+  };
 }
