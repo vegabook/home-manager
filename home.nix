@@ -14,8 +14,23 @@ let
   homeDirectory = builtins.getEnv "HOME";
   isLinux = builtins.currentSystem == "x86_64-linux" || builtins.currentSystem == "aarch64-linux";
   isDarwin = builtins.currentSystem == "aarch64-darwin";
-  hostname = builtins.getEnv "HOSTNAME";
+  hostname = builtins.getEnv "HOSTNAME"; 
 in
+let tmuxbg = if hostname == "rpi4" then "colour204"
+             else if hostname == "scen7" then "colour59"
+             else if hostname == "logicLHR" then "colour9"
+             else if hostname == "bee" then "colour40"
+             else "colour255";
+in
+#let
+#  tmuxbg = {
+#    "rpi4" = "colour163";
+#    "scen7" = "colour59";
+#    "logicLHR" = "colour9";
+#    "bee" = "colour40";
+#  }.${hostname};
+#in
+
 
 {
   # are we on Linux?
@@ -69,9 +84,20 @@ in
     userName = "vegabook";
     userEmail = "thomas@scendance.fr";
   };
-
   programs.tmux = {
     enable = true;
+    extraConfig = ''
+      bind -n C-h select-pane -L
+      bind -n C-j select-pane -D
+      bind -n C-k select-pane -U
+      bind -n C-l select-pane -R
+      set -g status-bg ${tmuxbg}
+            
+      set -g mouse on
+
+      set -g default-terminal "tmux-256color"
+      set -ag terminal-overrides ",xterm-256color:RGB"
+    '';
   };
 
   programs.zsh = if isDarwin then {
@@ -169,19 +195,6 @@ in
       source = ./wezterm;
       recursive = true;
     };  
-    "./.tmux.conf" = {
-      source = ./tmux/dot_tmux.conf;
-      recursive = false;
-    };
-    #"./.bashrc" = {
-    #  source = ./bashrc/bashrc;
-    #  recursive = false;
-    #};
-#
-#    "./.profile" = {
-#      source = ./profile/profile;
-#      recursive = false;
-#    };
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -207,7 +220,6 @@ in
   home.sessionVariables = {
     # EDITOR = "emacs";
     NIXPKGS_ALLOW_UNFREE=1;
-    NIX_SHELL_PRESERVE_PROMPT=1;
   };
 
   home.shellAliases = { 
