@@ -90,7 +90,7 @@ local plugins = {
         local configs = require("nvim-treesitter.configs")
 
         configs.setup({
-            ensure_installed = { "python", "c", "lua", "vim", "vimdoc", "query", "elixir", "erlang", "heex", "javascript", "html" },
+            ensure_installed = { "python", "c", "lua", "vim", "vimdoc", "query", "erlang", "heex", "javascript", "html" },
             sync_install = false,
             highlight = { enable = true },
             indent = { enable = true },  
