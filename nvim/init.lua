@@ -63,8 +63,12 @@ local plugins = {
             ensure_installed = { "python", "c", "lua", "vim", "vimdoc", 
               "query", "erlang", "heex", "eex", "elixir", "javascript", "html" },
             sync_install = false,
-            highlight = { enable = true },
-            indent = { enable = true },  
+            highlight = { enable = true, 
+              additional_vim_regex_highlighting = { "elixir" }, 
+            },
+            indent = { enable = true,
+            disable = { "elixir"}, 
+            },  
           })
       end
   },
