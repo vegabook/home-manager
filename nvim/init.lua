@@ -27,10 +27,7 @@ local plugins = {
 --  'rockerBOO/boo-colorscheme-nvim',
   'foxoman/vim-helix',
   'shaunsingh/moonlight.nvim',
-  {
-    'nvim-tree/nvim-tree.lua',
-    view = { adaptive_size = true }
-  },
+  'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'nyoom-engineering/oxocarbon.nvim',
   'mathofprimes/nightvision-nvim',
@@ -112,6 +109,7 @@ require("nvim-tree").setup({
   },
   view = {
     width = 30,
+    adaptive_size = true,
   },
   renderer = {
     group_empty = true,
