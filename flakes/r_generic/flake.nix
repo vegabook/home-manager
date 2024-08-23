@@ -29,6 +29,7 @@
           # The Nix packages provided in the environment
           packages = with pkgs; [
             R
+            rPackages.crayon
             rPackages.xts
             rPackages.dplyr
             rPackages.glmnet
@@ -55,7 +56,14 @@
             rPackages.devtools
             rPackages.tidyverse
             rPackages.svglite
+            rPackages.openai
+            rPackages.readxl
+            rPackages.readtext
           ];
+          shellHook = ''
+            echo "library(crayon); options(prompt = blue('> '))" > /tmp/.Rprofile
+            export R_PROFILE_USER=/tmp/.Rprofile
+          '';
         };
       });
     };
