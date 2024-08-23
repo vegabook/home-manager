@@ -61,7 +61,7 @@ local plugins = {
 
         configs.setup({
             ensure_installed = { "python", "c", "lua", "vim", "vimdoc", 
-              "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "R"},
+              "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r"},
             sync_install = false,
             highlight = { enable = true, 
               additional_vim_regex_highlighting = { "elixir" }, 
