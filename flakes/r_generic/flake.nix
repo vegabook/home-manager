@@ -61,7 +61,7 @@
             rPackages.readtext
           ];
           shellHook = ''
-            echo "library(crayon); options(prompt = blue('> '))" > /tmp/.Rprofile
+            echo "library(crayon); options(prompt = red('> '))" > /tmp/.Rprofile
             export R_PROFILE_USER=/tmp/.Rprofile
           '';
         };
