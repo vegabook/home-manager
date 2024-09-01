@@ -11,7 +11,7 @@ endif
 let g:colors_name = "zen"
 
 highlight Normal     term=none ctermfg=black   cterm=none guifg=black   gui=none
-highlight Comment    term=none ctermfg=cyan    cterm=none guifg=cyan    gui=none
+highlight Comment    term=none ctermfg=white    cterm=none guifg=white  gui=none
 highlight Constant   term=none ctermfg=red     cterm=none guifg=red     gui=none
 highlight Special    term=none ctermfg=red     cterm=bold guifg=red     gui=bold
 highlight Identifier term=none ctermfg=black   cterm=none guifg=black   gui=none
