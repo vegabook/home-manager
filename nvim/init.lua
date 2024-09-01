@@ -214,6 +214,11 @@ local function analyzeBufferContents()
       local match = string.match(line, pattern)
       -- Perform actions like setting options, calling functions, etc.
       vim.cmd.colorscheme(match)
+      if line:find("dark") then
+        vim.opt.background = 'dark'
+      else
+        vim.opt.background = 'light'
+      end
       break
     end
   end
