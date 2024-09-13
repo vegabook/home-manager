@@ -206,6 +206,7 @@ vim.api.nvim_create_autocmd(
   }
 )
 
+-- R bufenter
 vim.api.nvim_create_autocmd(
   {
       "BufEnter", "BufRead",
@@ -215,11 +216,8 @@ vim.api.nvim_create_autocmd(
     callback = function()
       vim.opt.shiftwidth = 2
       vim.opt.tabstop = 2
-      vim.opt.background = 'light'
-      require("boo-colorscheme").use({
-        italic = true, -- toggle italics
-        theme = "crimson_moonlight"
-      })
+      vim.opt.background = 'dark'
+      vim.cmd.colorscheme("3dglasses")
     end
   }
 )
