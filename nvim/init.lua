@@ -153,6 +153,7 @@ vim.keymap.set({'n', 'i'}, '<F1>', '<nop>', {})
 
 -- Buffer autocmds
 
+-- python
 vim.api.nvim_create_autocmd(
   {
       "BufEnter", "BufRead",
@@ -168,6 +169,7 @@ vim.api.nvim_create_autocmd(
   }
 )
 
+-- elixir exs
 vim.api.nvim_create_autocmd(
   {
       "BufEnter", "BufRead",
@@ -185,7 +187,8 @@ vim.api.nvim_create_autocmd(
   }
 )
 
- vim.api.nvim_create_autocmd(
+-- elixir ex
+vim.api.nvim_create_autocmd(
   {
       "BufEnter", "BufRead",
   },
@@ -196,13 +199,30 @@ vim.api.nvim_create_autocmd(
       vim.opt.tabstop = 2
       vim.opt.background = 'dark'
       require("boo-colorscheme").use({
-	italic = true, -- toggle italics
-	theme = "boo"
+        italic = true, -- toggle italics
+        theme = "boo"
       })
     end
   }
 )
 
+vim.api.nvim_create_autocmd(
+  {
+      "BufEnter", "BufRead",
+  },
+  {
+    pattern = "*.r",
+    callback = function()
+      vim.opt.shiftwidth = 2
+      vim.opt.tabstop = 2
+      vim.opt.background = 'light'
+      require("boo-colorscheme").use({
+        italic = true, -- toggle italics
+        theme = "crimson_moonlight"
+      })
+    end
+  }
+)
 -- colorscheme per file in first 5 lines
 --
 local function analyzeBufferContents()
