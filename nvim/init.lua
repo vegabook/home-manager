@@ -151,76 +151,50 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set({'n', 'i'}, '<F1>', '<nop>', {})
 
 
--- Buffer autocmds
+-- Buffer filetype settings
 
--- python
-vim.api.nvim_create_autocmd(
-  {
-      "BufEnter", "BufRead",
-  },
-  {
-    pattern = "*.py",
-    callback = function()
-      vim.opt.shiftwidth = 4
-      vim.opt.tabstop = 4
-      vim.opt.background = 'dark'
-      vim.cmd.colorscheme('oxocarbon')
-    end
-  }
-)
+vim.api.nvim_create_autocmd({"BufEnter", "BufNewFile", "BufRead"}, {
+  callback = function()
+    local ft = vim.bo.filetype
+    local file_ext = vim.fn.expand("%:e")
+    
+    if ft == "python" then
+      vim.opt_local.shiftwidth = 4
+      vim.opt_local.tabstop = 4
+      vim.opt.background = "dark"
+      vim.cmd.colorscheme("oxocarbon")
 
--- elixir exs
-vim.api.nvim_create_autocmd(
-  {
-      "BufEnter", "BufRead",
-  },
-  {
-    pattern = "*.exs",
-    callback = function()
-      vim.opt.shiftwidth = 2
-      vim.opt.tabstop = 2
-      vim.opt.background = 'dark'
-      vim.g.nv_contrast = 'medium'
-      vim.cmd.colorscheme('nightvision')
+    elseif ft == "elixir" then
+      vim.opt_local.shiftwidth = 2
+      vim.opt_local.tabstop = 2
+      vim.opt.background = "dark"
 
-    end
-  }
-)
+      if file_ext == "ex" then
+        require("boo-colorscheme").use({
+          italic = true,
+          theme = "boo",
+        })
+      elseif file_ext == "exs" then
+        vim.g.nv_contrast = "medium"
+        vim.cmd.colorscheme("nightvision")
+      end
 
--- elixir ex
-vim.api.nvim_create_autocmd(
-  {
-      "BufEnter", "BufRead",
-  },
-  {
-    pattern = "*.ex",
-    callback = function()
-      vim.opt.shiftwidth = 2
-      vim.opt.tabstop = 2
-      vim.opt.background = 'dark'
-      require("boo-colorscheme").use({
-        italic = true, -- toggle italics
-        theme = "boo"
-      })
-    end
-  }
-)
-
--- R bufenter
-vim.api.nvim_create_autocmd(
-  {
-      "BufEnter", "BufRead",
-  },
-  {
-    pattern = "*.r",
-    callback = function()
-      vim.opt.shiftwidth = 2
-      vim.opt.tabstop = 2
-      vim.opt.background = 'dark'
+    elseif ft == "r" then
+      vim.opt_local.shiftwidth = 2
+      vim.opt_local.tabstop = 2
+      vim.opt.background = "dark"
       vim.cmd.colorscheme("3dglasses")
+
+    elseif ft == "json" then
+      vim.opt_local.shiftwidth = 2
+      vim.opt_local.tabstop = 2
+      vim.opt.background = "dark"
+      vim.cmd.colorscheme("dw_purple")
     end
-  }
-)
+  end,
+})
+
+
 -- colorscheme per file in first 5 lines
 --
 local function analyzeBufferContents()
