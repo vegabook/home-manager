@@ -190,7 +190,6 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufNewFile", "BufRead"}, {
       vim.opt_local.tabstop = 2
       vim.opt.background = "dark"
       vim.cmd.colorscheme("dw_purple")
-    end
 
     elseif ft == "swift" then
       vim.opt_local.shiftwidth = 2
