@@ -60,6 +60,7 @@ in
     tree
     ack
     iosevka
+    bqn386
     chafa # sixel viewer
     fuse
     neovim
