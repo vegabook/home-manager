@@ -29,6 +29,14 @@ local colors = {
     "White", "WhiteSmoke", "Yellow", "YellowGreen"
 }
 
+
+-- The set of schemes that we like and want to put in our rotation
+local schemes = {}
+for name, scheme in pairs(wezterm.color.get_builtin_schemes()) do
+  table.insert(schemes, name)
+end
+
+
 -- Seed the random number generator
 math.randomseed(os.time())
 
@@ -47,8 +55,8 @@ end
 -- Call the function and store the results
 color1, color2, color3 = chooseThreeColors()
 
+-- remember this runs every time <ctrl> + <shift> + r is pressed because that reloads the config
 config.window_background_gradient = {
-
 
   colors = { color1, color2, color3 },
   orientation = {
@@ -68,7 +76,7 @@ config.window_background_gradient = {
       -- and cy values places the circle in the center of the
       -- window, with the edges touching the window edges.
       -- Values larger than 1 are possible.
-      radius = 1.25,
+      radius = 1.1,
     },
   },
 }
@@ -87,11 +95,28 @@ wezterm.on('toggle-opacity', function(window, pane)
   window:set_config_overrides(overrides)
 end)
 
+wezterm.on('change_colourscheme', function(window, pane)
+  -- If there are no overrides, this is our first time seeing
+  -- this window, so we can pick a random scheme.
+  if not window:get_config_overrides() then
+    -- Pick a random scheme name
+    local scheme = schemes[math.random(#schemes)]
+    window:set_config_overrides {
+      color_scheme = scheme,
+    }
+  end
+end)
+
 config.keys = {
   {
     key = 'B',
     mods = 'CTRL',
     action = wezterm.action.EmitEvent 'toggle-opacity',
+  },
+  {
+    key = 'C',
+    mods = 'CTRL',
+    action = wezterm.action.EmitEvent 'change_colourscheme',
   },
   {
     key = 'RightArrow',
