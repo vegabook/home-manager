@@ -40,7 +40,11 @@ end
 -- Seed the random number generator
 math.randomseed(os.time())
 
--- Function to select two unique random colors from the list
+
+-- more examples here for communicating with wezterm to change in place
+-- https://wezfurlong.org/wezterm/config/lua/window/set_config_overrides.html
+-- https://wezfurlong.org/wezterm/recipes/passing-data.html#user-vars
+
 function chooseThreeColors()
     local index1 = math.random(#colors)
     local index2 = math.random(#colors)
@@ -52,71 +56,31 @@ function chooseThreeColors()
     return colors[index1], colors[index2], colors[index3]
 end
 
--- Call the function and store the results
-color1, color2, color3 = chooseThreeColors()
 
--- remember this runs every time <ctrl> + <shift> + r is pressed because that reloads the config
-config.window_background_gradient = {
-
-  colors = { color1, color2, color3 },
-  orientation = {
-    Radial = {
-      -- Specifies the x coordinate of the center of the circle,
-      -- in the range 0.0 through 1.0.  The default is 0.5 which
-      -- is centered in the X dimension.
-      cx = 0.75,
-
-      -- Specifies the y coordinate of the center of the circle,
-      -- in the range 0.0 through 1.0.  The default is 0.5 which
-      -- is centered in the Y dimension.
-      cy = 0.75,
-
-      -- Specifies the radius of the notional circle.
-      -- The default is 0.5, which combined with the default cx
-      -- and cy values places the circle in the center of the
-      -- window, with the edges touching the window edges.
-      -- Values larger than 1 are possible.
-      radius = 1.1,
+wezterm.on('change-radial-background', function(window, pane)
+  local color1, color2, color3 = chooseThreeColors()
+  local scheme = schemes[math.random(#schemes)]
+  window:set_config_overrides {
+    window_background_gradient = {
+      colors = { color1, color2, color3 },
+      orientation = {
+        Radial = {
+          cx = 0.75,
+          cy = 0.75,
+          radius = 1.1,
+        },
+      },
     },
-  },
-}
-
--- more examples here for communicating with wezterm to change in place
--- https://wezfurlong.org/wezterm/config/lua/window/set_config_overrides.html
--- https://wezfurlong.org/wezterm/recipes/passing-data.html#user-vars
-
-wezterm.on('toggle-opacity', function(window, pane)
-  local overrides = window:get_config_overrides() or {}
-  if not overrides.window_background_opacity then
-    overrides.window_background_opacity = 0.5
-  else
-    overrides.window_background_opacity = nil
-  end
-  window:set_config_overrides(overrides)
+    color_scheme = scheme,
+  }
 end)
 
-wezterm.on('change_colourscheme', function(window, pane)
-  -- If there are no overrides, this is our first time seeing
-  -- this window, so we can pick a random scheme.
-  if not window:get_config_overrides() then
-    -- Pick a random scheme name
-    local scheme = schemes[math.random(#schemes)]
-    window:set_config_overrides {
-      color_scheme = scheme,
-    }
-  end
-end)
 
 config.keys = {
   {
     key = 'B',
     mods = 'CTRL',
-    action = wezterm.action.EmitEvent 'toggle-opacity',
-  },
-  {
-    key = 'C',
-    mods = 'CTRL',
-    action = wezterm.action.EmitEvent 'change_colourscheme',
+    action = wezterm.action.EmitEvent 'change-radial-background',
   },
   {
     key = 'RightArrow',
