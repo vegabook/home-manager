@@ -2,11 +2,13 @@ local wezterm = require 'wezterm'
 local config = {}
 
 config.font = wezterm.font 'Iosevka Nerd Font'
+
 config.font_size = 17.0 
 
 config.enable_tab_bar = false
 config.color_scheme = 'Github'
 config.window_close_confirmation = 'NeverPrompt'
+config.front_end = 'WebGpu'
 -- Define the list of colors
 local colors = {
     "AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue", "BlueViolet",
