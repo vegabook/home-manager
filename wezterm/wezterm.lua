@@ -31,23 +31,24 @@ local colors = {
 math.randomseed(os.time())
 
 -- Function to select two unique random colors from the list
-function chooseTwoColors()
+function chooseThreeColors()
     local index1 = math.random(#colors)
     local index2 = math.random(#colors)
+    local index3 = math.random(#colors)
     -- Ensure that index2 is different from index1
     while index2 == index1 do
         index2 = math.random(#colors)
     end
-    return colors[index1], colors[index2]
+    return colors[index1], colors[index2], colors[index3]
 end
 
 -- Call the function and store the results
-color1, color2 = chooseTwoColors()
+color1, color2, color3 = chooseThreeColors()
 
 config.window_background_gradient = {
 
 
-  colors = { color1, color2 },
+  colors = { color1, color2, color3 },
   orientation = {
     Radial = {
       -- Specifies the x coordinate of the center of the circle,
