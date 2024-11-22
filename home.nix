@@ -65,7 +65,7 @@ in
     fuse
     neovim
     nodejs
-    (nerdfonts.override { fonts = [ "FantasqueSansMono" "3270" "HeavyData"]; })
+    (nerdfonts.override { fonts = [ "Inconsolata" "FantasqueSansMono" "3270" "HeavyData"]; })
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
