@@ -169,12 +169,20 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufNewFile", "BufRead"}, {
       vim.opt_local.shiftwidth = 2
       vim.opt_local.tabstop = 2
       vim.opt.background = "dark"
-
+      
       if file_ext == "ex" then
-        require("boo-colorscheme").use({
-          italic = true,
-          theme = "boo",
-        })
+        local file_path = vim.fn.expand("%:p:h")
+        if file_path:find("/deps/") then
+          require("boo-colorscheme").use({
+            italic = true,
+            theme = "crimson_moonlight",
+          })
+        else
+          require("boo-colorscheme").use({
+            italic = true,
+            theme = "boo",
+          })
+        end
       elseif file_ext == "exs" then
         vim.g.nv_contrast = "medium"
         vim.cmd.colorscheme("nightvision")
