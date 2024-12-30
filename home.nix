@@ -136,6 +136,10 @@ in
     enable = true;
   };
 
+  programs.asciinema = {
+    enable = true;
+  };
+
   # github cli 
   programs.gh = {
     enable = true;
