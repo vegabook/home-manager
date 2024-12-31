@@ -59,7 +59,7 @@
             alias tpsql="PGHOST=$transactions_host PGPORT=$transactions_port PGUSER=$transactions_user PGPASSWORD=$transactions_pwd PGDATABASE=$transactions_dbname psql"
             alias neocli="PGPASSWORD=$neonews_pwd pgcli --host $neonews_host --port $neonews_port --username $neonews_user --dbname $neonews_dbname"
             alias tcli="PGPASSWORD=$transactions_pwd pgcli --host $transactions_host --port $transactions_port --username $transactions_user --dbname $transactions_dbname"
-            alias ipy="ipython --nosep --InteractiveShell.cache_size=0 $ --TerminalInteractiveShell.editing_mode=vi"
+            alias ipy="ipython --nosep --InteractiveShell.cache_size=0 --TerminalInteractiveShell.editing_mode=vi"
             alias vexit="deactivate && exit"
 
             export PS1="🔰 \e[38;5;220m\]Neo\e[38;5;76mneX\[\e[0m $PS1";
