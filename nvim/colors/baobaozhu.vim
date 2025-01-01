@@ -48,7 +48,7 @@ if version >= 700
   hi SpellRare      term=reverse ctermbg=202 gui=undercurl guisp=#ff5f00
   hi SpellLocal     term=underline ctermbg=34 gui=undercurl guisp=#00af00
   hi TabLine        term=underline cterm=underline ctermfg=15 ctermbg=242
-  hi TabLineSel     term=bold cterm=bold
+  hi TabLineSel     term=bold cterm=bold ctermfg=44 guifg=#00d7af
   hi TabLineFill    term=reverse cterm=reverse
 endif
 
