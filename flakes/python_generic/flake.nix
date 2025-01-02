@@ -45,6 +45,9 @@
           ];
           shellHook = ''
 
+
+            # Postgres transactions and neonews credentials
+
             CREDENTIALS_FILE="credentials.json"
             if [[ ! -f $CREDENTIALS_FILE ]]; then
               echo "Error: Credentials file '$CREDENTIALS_FILE' not found!"
@@ -59,12 +62,16 @@
             alias tpsql="PGHOST=$transactions_host PGPORT=$transactions_port PGUSER=$transactions_user PGPASSWORD=$transactions_pwd PGDATABASE=$transactions_dbname psql"
             alias neocli="PGPASSWORD=$neonews_pwd pgcli --host $neonews_host --port $neonews_port --username $neonews_user --dbname $neonews_dbname"
             alias tcli="PGPASSWORD=$transactions_pwd pgcli --host $transactions_host --port $transactions_port --username $transactions_user --dbname $transactions_dbname"
-            alias ipy="ipython --nosep --InteractiveShell.cache_size=0 --TerminalInteractiveShell.editing_mode=vi"
             alias vexit="deactivate && exit"
 
-            export PS1="🔰 \e[38;5;220m\]Neo\e[38;5;76mneX\[\e[0m $PS1";
 
-            # Create virtual environment if it 
+            # IPython
+
+            alias ipy="ipython --nosep --InteractiveShell.cache_size=0 --TerminalInteractiveShell.editing_mode=vi -i -c 'get_ipython().run_line_magic(\"load_ext\", \"autoreload\"); get_ipython().run_line_magic(\"autoreload\", \"2\")'"
+
+
+            # Virtual environment
+
             if [ ! -d .venv ]; then
               echo "Creating virtual environment with uv at .venv"
               uv venv
@@ -74,6 +81,8 @@
             echo "Activating virtual environment"
             source .venv/bin/activate
 
+
+            export PS1="🔰 \e[38;5;220m\]Neo\e[38;5;76mneX\[\e[0m $PS1";
           '';
         };
       });
