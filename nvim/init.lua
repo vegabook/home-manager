@@ -34,6 +34,7 @@ local plugins = {
   'ribru17/bamboo.nvim',
   'rockerBOO/boo-colorscheme-nvim',
   'mlochbaum/BQN',
+  'slugbyte/lackluster.nvim',
   {
     'cameron-wags/rainbow_csv.nvim',
     config = true,
