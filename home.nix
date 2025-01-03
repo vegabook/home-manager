@@ -64,7 +64,7 @@ in
     fuse
     neovim
     nodejs
-    nerd-fonts.iosevka
+    (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" ]; })
     asciinema
 
     # # You can also create simple shell scripts directly inside your
