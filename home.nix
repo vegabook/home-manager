@@ -64,7 +64,6 @@ in
     fuse
     neovim
     nodejs
-    nerd-fonts.fira-code
     nerd-fonts.iosevka
     asciinema
 
