@@ -37,7 +37,7 @@ hi SignColumn     term=standout ctermfg=60 ctermbg=7 guifg=#5f5f87 guibg=#bbbbbb
 
 if version >= 700
   hi CursorColumn   term=reverse ctermbg=242 guibg=#6c6c6c
-  hi CursorLine     term=underline cterm=underline guibg=#6c6c6c
+  hi CursorLine     term=underline cterm=underline ctermbg=#4c304c
   hi MatchParen     term=reverse ctermbg=32 guibg=#0087d7
   hi Pmenu          ctermbg=95 guibg=#875f5f
   hi PmenuSel       ctermfg=15 ctermbg=60 guifg=#ffffff guibg=#5f5f87
