@@ -34,7 +34,6 @@ local plugins = {
   'ribru17/bamboo.nvim',
   'rockerBOO/boo-colorscheme-nvim',
   'mlochbaum/BQN',
-  'norcalli/nvim-colorizer.lua',
   'slugbyte/lackluster.nvim',
   {
     'cameron-wags/rainbow_csv.nvim',
@@ -101,6 +100,12 @@ local copilot_opts = {}
 --
 --
 require("lazy").setup(plugins, opts)
+vim.g.nvim_tree_show_icons = {
+  git = 0,
+  folders = 0,
+  files = 0,
+  folder_arrows = 0,
+}
 require("nvim-tree").setup({
   actions = {
     open_file = {
@@ -126,7 +131,6 @@ require("nvim-tree").setup({
   },
 })
 
-lua require'colorizer'.setup()
 
 -- Global settings
 vim.opt.modifiable = true
