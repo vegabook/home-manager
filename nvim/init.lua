@@ -28,7 +28,6 @@ local plugins = {
   'foxoman/vim-helix',
   'shaunsingh/moonlight.nvim',
   'nvim-tree/nvim-tree.lua',
-  'nvim-tree/nvim-web-devicons',
   'nyoom-engineering/oxocarbon.nvim',
   'mathofprimes/nightvision-nvim',
   'ribru17/bamboo.nvim',
@@ -99,12 +98,6 @@ local copilot_opts = {}
 -- setup
 --
 --
-vim.g.nvim_tree_show_icons = {
-  git = 0,
-  folders = 0,
-  files = 0,
-  folder_arrows = 0,
-}
 
 require("lazy").setup(plugins, opts)
 require("nvim-tree").setup({
@@ -122,6 +115,14 @@ require("nvim-tree").setup({
   },
   renderer = {
     group_empty = true,
+    icons = {
+      show = {
+        git = false,
+        folder = false,
+        file = false,
+        folder_arrow = false,
+      },
+    },
   },
   git = {
     enable = true,
