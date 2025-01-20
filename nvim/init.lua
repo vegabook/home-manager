@@ -99,13 +99,14 @@ local copilot_opts = {}
 -- setup
 --
 --
-require("lazy").setup(plugins, opts)
 vim.g.nvim_tree_show_icons = {
   git = 0,
   folders = 0,
   files = 0,
   folder_arrows = 0,
 }
+
+require("lazy").setup(plugins, opts)
 require("nvim-tree").setup({
   actions = {
     open_file = {
@@ -143,7 +144,7 @@ vim.opt.termguicolors = true
 vim.opt.mouse = 'a'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.expandtab = true
-vim.opt.shiftwidth = 2:
+vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.ttimeoutlen = 50
 
