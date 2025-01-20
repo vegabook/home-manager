@@ -34,6 +34,7 @@ local plugins = {
   'ribru17/bamboo.nvim',
   'rockerBOO/boo-colorscheme-nvim',
   'mlochbaum/BQN',
+  'norcalli/nvim-colorizer.lua',
   'slugbyte/lackluster.nvim',
   {
     'cameron-wags/rainbow_csv.nvim',
@@ -98,6 +99,7 @@ local copilot_opts = {}
 
 -- setup
 --
+--
 require("lazy").setup(plugins, opts)
 require("nvim-tree").setup({
   actions = {
@@ -124,6 +126,8 @@ require("nvim-tree").setup({
   },
 })
 
+lua require'colorizer'.setup()
+
 -- Global settings
 vim.opt.modifiable = true
 vim.opt.number = true
@@ -135,7 +139,7 @@ vim.opt.termguicolors = true
 vim.opt.mouse = 'a'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.expandtab = true
-vim.opt.shiftwidth = 2
+vim.opt.shiftwidth = 2:
 vim.opt.tabstop = 2
 vim.opt.ttimeoutlen = 50
 
