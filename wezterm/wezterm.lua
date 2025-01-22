@@ -1,8 +1,8 @@
 local wezterm = require 'wezterm'
 local config = {}
 
--- config.font = wezterm.font 'Iosevka NF'
-config.font = wezterm.font 'bqn386'
+config.font = wezterm.font 'Iosevka NF'
+
 
 config.font_size = 17.0 
 
