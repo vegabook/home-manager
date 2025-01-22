@@ -149,6 +149,16 @@ vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.ttimeoutlen = 50
 
+vim.opt.guicursor = {
+  "n-v-c:block",
+  "i-ci-ve:ver25",
+  "r-cr:hor20",
+  "o:hor50",
+  "a:blinkwait300-blinkoff200-blinkon220-Cursor/lCursor",
+  "sm:block-blinkwait175-blinkoff150-blinkon175"
+}
+
+
 vim.g.mapleader = ","
 
 
