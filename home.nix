@@ -104,7 +104,6 @@ in
     shellAliases = {
       ls = "ls -alG";
       vim = "nvim";
-      zlj = "zellij";
       sd="cd ~ && cd \$(find * -type d | fzf)";
     };
     initExtra = ''
@@ -123,16 +122,6 @@ in
   };
     
   
-  programs.zellij = {
-    enable = true;
-    settings = {
-      mouse_mode = true;
-      theme = "gruvbox";
-      pane_frames = true;
-      ui.pane_frames.rounded_corners = false;
-    };
-  };
-
   programs.fzf = {
     enable = true;
   };
