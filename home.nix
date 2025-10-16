@@ -82,6 +82,11 @@ in
     userName = "vegabook";
     userEmail = "thomas@scendance.fr";
   };
+
+  programs.git-lfs = {
+    enable = true;
+  };
+
   programs.tmux = {
     enable = true;
     extraConfig = ''
@@ -108,7 +113,7 @@ in
       vim = "nvim";
       sd="cd ~ && cd \$(find * -type d | fzf)";
     };
-    initExtra = ''
+    initContent = ''
       make_superscript () { sed 'y/0123456789/⁰¹²³⁴⁵⁶⁷⁸⁹/' <<< $SHLVL; };
       direnv_yes () { env | grep DIRENV_DIR | wc -l | sed 's/[0 ]//g'; };
       nixshell_yes () { env | grep IN_NIX_SHELL | wc -l | sed 's/[0 ]//g'; };
