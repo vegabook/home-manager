@@ -81,8 +81,8 @@ in
 
   programs.git = {
     enable = true;
-    user.name = "vegabook";
-    user.email = "thomas@scendance.fr";
+    settings.user.name = "vegabook";
+    settings.user.email = "thomas@scendance.fr";
     lfs.enable = true;
   };
 
