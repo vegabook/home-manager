@@ -93,6 +93,11 @@ local plugins = {
       dependencies = { 'nvim-lua/plenary.nvim' }
   },
 
+  { 
+    "zbirenbaum/copilot.lua",
+    dependencies = { "copilotlsp-nvim/copilot-lsp" },
+  },
+
   {
     "folke/sidekick.nvim",
     opts = {
