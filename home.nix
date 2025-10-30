@@ -68,6 +68,7 @@ in
     bqn386
     nerd-fonts.jetbrains-mono
     nerd-fonts.iosevka
+    nerd-fonts.monofur
     git-lfs
 
     # # You can also create simple shell scripts directly inside your
@@ -80,8 +81,8 @@ in
 
   programs.git = {
     enable = true;
-    userName = "vegabook";
-    userEmail = "thomas@scendance.fr";
+    user.name = "vegabook";
+    user.email = "thomas@scendance.fr";
     lfs.enable = true;
   };
 
