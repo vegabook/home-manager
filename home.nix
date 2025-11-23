@@ -83,8 +83,8 @@ in
 
   programs.git = {
     enable = true;
-    userName = "vegabook";
-    userEmail = "thomas@scendance.fr";
+    settings.user.name = "vegabook";
+    settings.user.email = "thomas@scendance.fr";
     lfs.enable = true;
   };
 
@@ -100,7 +100,7 @@ in
       set -g mouse on
 
       set -g default-terminal "tmux-256color"
-      set -ag terminal-overrides ",xterm-256color:RGB"
+      set -ag terminal-overrides ",*256col*:Tc"
       set -g escape-time 0
     '';
   };
