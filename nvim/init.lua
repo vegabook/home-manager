@@ -246,9 +246,13 @@ vim.g.mapleader = ","
 -- Mappings
 
 vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
-vim.keymap.set('n', '<Right>', ':tabn<cr>')
+vim.keymap.set('n', '<Right>', ':tabn<cr>') 
 vim.keymap.set('n', '<Left>', ':tabp<cr>')
 
+vim.keymap.set('n', '<leader>rc', function()
+  local schemes = vim.fn.getcompletion('', 'color')
+  vim.cmd.colorscheme(schemes[math.random(#schemes)])
+end, { desc = "Random colorscheme now" })
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
