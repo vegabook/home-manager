@@ -30,6 +30,10 @@ local colors = {
     "White", "WhiteSmoke", "Yellow", "YellowGreen"
 }
 
+local fonts = {
+    "Iosevka NF", "JetBrainsMono NF", "VictorMono NF", "Tinos Nerd Font Propo", "ComicShannsMono Nerd Font", "Lekton Nerd Font" 
+}
+
 
 -- The set of schemes that we like and want to put in our rotation
 local schemes = {}
@@ -57,6 +61,13 @@ function chooseThreeColors()
     return colors[index1], colors[index2], colors[index3]
 end
 
+wezterm.on('change-font', function(window, pane)
+  local newfont = fonts[math.random(#fonts)]
+  window:set_config_overrides {
+    font = wezterm.font(newfont),
+    config.font_size = 17.0, 
+  }
+end)
 
 wezterm.on('change-radial-background', function(window, pane)
   local color1, color2, color3 = chooseThreeColors()
@@ -82,6 +93,11 @@ config.keys = {
     key = 'B',
     mods = 'CTRL',
     action = wezterm.action.EmitEvent 'change-radial-background',
+  },
+  {
+    key = 'G',
+    mods = 'CTRL',
+    action = wezterm.action.EmitEvent 'change-font',
   },
   {
     key = 'RightArrow',
