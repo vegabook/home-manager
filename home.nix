@@ -66,12 +66,11 @@ in
     nodejs
     asciinema
     bqn386
-    nerd-fonts.jetbrains-mono
     nerd-fonts.iosevka
-    nerd-fonts.tinos
     nerd-fonts.comic-shanns-mono
     nerd-fonts.lekton
     nerd-fonts.victor-mono
+    nerd-fonts._3270
     git-lfs
     tree-sitter
     ripgrep

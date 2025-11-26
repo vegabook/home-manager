@@ -31,7 +31,7 @@ local colors = {
 }
 
 local fonts = {
-    "Iosevka NF", "JetBrainsMono NF", "VictorMono NF", "Tinos Nerd Font Propo", "ComicShannsMono Nerd Font", "Lekton Nerd Font" 
+    "Iosevka NF", "VictorMono NF", "ComicShannsMono Nerd Font", "Lekton Nerd Font", "3270 Nerd Font"
 }
 
 
@@ -65,9 +65,15 @@ wezterm.on('change-font', function(window, pane)
   local newfont = fonts[math.random(#fonts)]
   window:set_config_overrides {
     font = wezterm.font(newfont),
-    config.font_size = 17.0, 
+    font_size = 17.0, 
   }
+  window:set_right_status(wezterm.format {
+    { Foreground = { Color = '#88c0d0' } },
+    { Text = '  Font: ' .. newfont .. '  ' },
+  })
+
 end)
+
 
 wezterm.on('change-radial-background', function(window, pane)
   local color1, color2, color3 = chooseThreeColors()
