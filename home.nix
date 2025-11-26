@@ -68,6 +68,10 @@ in
     bqn386
     nerd-fonts.jetbrains-mono
     nerd-fonts.iosevka
+    nerd-fonts.tinos
+    nerd-fonts.comic-shanns-mono
+    nerd-fonts.lekton
+    nerd-fonts.victor-mono
     git-lfs
     tree-sitter
     ripgrep
