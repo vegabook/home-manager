@@ -245,52 +245,52 @@ vim.g.mapleader = ","
 
 -- Mappings
 
-vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
-vim.keymap.set('n', '<Right>', ':tabn<cr>') 
-vim.keymap.set('n', '<Left>', ':tabp<cr>')
+  vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
+  vim.keymap.set('n', '<Right>', ':tabn<cr>') 
+  vim.keymap.set('n', '<Left>', ':tabp<cr>')
 
-vim.keymap.set('n', '<leader>rc', function()
-  local schemes = vim.fn.getcompletion('', 'color')
-  vim.cmd.colorscheme(schemes[math.random(#schemes)])
-end, { desc = "Random colorscheme now" })
+  vim.keymap.set('n', '<Leader>cv', function()
+    local schemes = vim.fn.getcompletion('', 'color')
+    vim.cmd.colorscheme(schemes[math.random(#schemes)])
+  end, { desc = "Random colorscheme now" })
 
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fz', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-vim.keymap.set({'n', 'i'}, '<F1>', '<nop>', {})
+  local builtin = require('telescope.builtin')
+  vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+  vim.keymap.set('n', '<leader>fz', builtin.live_grep, {})
+  vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+  vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+  vim.keymap.set({'n', 'i'}, '<F1>', '<nop>', {})
 
 
--- Buffer filetype settings
+  -- Buffer filetype settings
 
-vim.api.nvim_create_autocmd({"BufEnter", "BufNewFile", "BufRead"}, {
-  callback = function()
-    local ft = vim.bo.filetype
-    local file_ext = vim.fn.expand("%:e")
-    
-    if ft == "python" then
-      vim.opt_local.shiftwidth = 4
-      vim.opt_local.tabstop = 4
-      vim.opt.background = "dark"
-      vim.cmd.colorscheme("oxocarbon")
-
-    elseif ft == "elixir" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
+  vim.api.nvim_create_autocmd({"BufEnter", "BufNewFile", "BufRead"}, {
+    callback = function()
+      local ft = vim.bo.filetype
+      local file_ext = vim.fn.expand("%:e")
       
-      if file_ext == "ex" then
-        local file_path = vim.fn.expand("%:p:h")
-        if file_path:find("/deps/") then
-          require("boo-colorscheme").use({
-            italic = true,
-            theme = "crimson_moonlight",
-          })
-        else
-          require("boo-colorscheme").use({
-            italic = true,
-            theme = "boo",
+      if ft == "python" then
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.tabstop = 4
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("oxocarbon")
+
+      elseif ft == "elixir" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        
+        if file_ext == "ex" then
+          local file_path = vim.fn.expand("%:p:h")
+          if file_path:find("/deps/") then
+            require("boo-colorscheme").use({
+              italic = true,
+              theme = "crimson_moonlight",
+            })
+          else
+            require("boo-colorscheme").use({
+              italic = true,
+              theme = "boo",
           })
         end
       elseif file_ext == "exs" then
