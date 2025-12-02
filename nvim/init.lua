@@ -239,6 +239,19 @@ vim.g.mapleader = ","
       vim.opt_local.tabstop = 2
       vim.opt.background = "dark"
       vim.cmd.colorscheme("blue-mood")
+
+    elseif ft == "" then
+      vim.opt_local.shiftwidth = 4
+      vim.opt_local.tabstop = 4
+      vim.opt.background = "dark"
+      vim.cmd.colorscheme("darkrose")
+
+    else
+      vim.opt_local.shiftwidth = 2
+      vim.opt_local.tabstop = 2
+      vim.opt.background = "dark"
+      vim.cmd.colorscheme("revolutions")
+
     end
 
   end,
