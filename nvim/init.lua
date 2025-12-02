@@ -222,40 +222,40 @@ vim.g.mapleader = ","
         vim.cmd.colorscheme("nightvision")
       end
 
-    elseif ft == "r" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      vim.cmd.colorscheme("3dglasses")
+      elseif ft == "r" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("3dglasses")
 
-    elseif ft == "json" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      vim.cmd.colorscheme("dw_purple")
+      elseif ft == "json" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("dw_purple")
 
-    elseif ft == "swift" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      vim.cmd.colorscheme("blue-mood")
+      elseif ft == "swift" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("blue-mood")
 
-    elseif ft == "" then
-      vim.opt_local.shiftwidth = 4
-      vim.opt_local.tabstop = 4
-      vim.opt.background = "dark"
-      vim.cmd.colorscheme("darkrose")
+      elseif ft == "" then
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.tabstop = 4
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("darkrose")
 
-    else
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      vim.cmd.colorscheme("revolutions")
+      else
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("revolutions")
 
-    end
+      end
 
-  end,
-})
+    end,
+  })
 
 
 -- colorscheme per file in first 5 lines
@@ -281,7 +281,7 @@ end
 
 vim.api.nvim_create_autocmd(
   {
-      "BufEnter", "BufRead"
+      "BufEnter", "BufRead", "BufNewFile"
   },
   {
     callback = analyzeBufferContents
