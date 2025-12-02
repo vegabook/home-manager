@@ -240,7 +240,7 @@ vim.g.mapleader = ","
         vim.opt.background = "dark"
         vim.cmd.colorscheme("blue-mood")
 
-      elseif ft == "" then
+      elseif ft == "zig" then
         vim.opt_local.shiftwidth = 4
         vim.opt_local.tabstop = 4
         vim.opt.background = "dark"
