@@ -246,6 +246,12 @@ vim.g.mapleader = ","
         vim.opt.background = "dark"
         vim.cmd.colorscheme("darkrose")
 
+      elseif ft == "html" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("atom")
+
       else
         vim.opt_local.shiftwidth = 2
         vim.opt_local.tabstop = 2
