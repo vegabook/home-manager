@@ -164,6 +164,7 @@ vim.g.mapleader = ","
   vim.keymap.set('n', '<Left>', ':tabp<cr>')
 
   vim.keymap.set('n', '<Leader>cv', function()
+    math.randomseed(os.time())
     local schemes = vim.fn.getcompletion('', 'color')
     vim.cmd.colorscheme(schemes[math.random(#schemes)])
   end, { desc = "Random colorscheme now" })
