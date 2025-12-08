@@ -75,24 +75,11 @@ local plugins = {
               enable = true,
             },  
           })
+          local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+      ts_update()
       end
   },
 
-
-  {
-    "https://git.sr.ht/~swaits/zellij-nav.nvim",
-    lazy = true,
-    event = "VeryLazy",
-    keys = {
-      { "<c-h>", "<cmd>ZellijNavigateLeft<cr>",  { silent = true, desc = "navigate left"  } },
-      { "<c-j>", "<cmd>ZellijNavigateDown<cr>",  { silent = true, desc = "navigate down"  } },
-      { "<c-k>", "<cmd>ZellijNavigateUp<cr>",    { silent = true, desc = "navigate up"    } },
-      { "<c-l>", "<cmd>ZellijNavigateRight<cr>", { silent = true, desc = "navigate right" } },
-    },
-    opts = {},
-  },
-
-  'hrsh7th/nvim-cmp',
   {
     'nvim-telescope/telescope.nvim', branch = '0.1.x',
       dependencies = { 'nvim-lua/plenary.nvim' }
