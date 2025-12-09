@@ -183,6 +183,34 @@ vim.g.mapleader = ","
     callback = function()
       local ft = vim.bo.filetype
       local file_ext = vim.fn.expand("%:e")
+      local buftype  = vim.bo.buftype
+
+      -- List of filetypes and buftypes to not change colorscheme for
+      local ignored_filetypes = {
+        ["nvimtree"]       = true,
+        ["TelescopePrompt"]= true,
+        ["lazy"]           = true,
+        ["mason"]          = true,
+        ["alpha"]          = true,
+        ["dashboard"]      = true,
+        ["neo-tree"]       = true,
+        ["oil"]            = true,
+        ["toggleterm"]     = true,
+        ["minifiles"]      = true,
+        ["notify"]         = true,
+        ["fzf"]            = true,
+      }
+
+      local ignored_buftypes = {
+        ["nofile"]   = true,
+        ["prompt"]   = true,
+        ["terminal"] = true,
+        ["help"]     = true,
+      }
+
+      if ignored_filetypes[ft] or ignored_buftypes[buftype] then
+        return  -- skip if filetype shouldn't change colour scheme
+      end
       
       if ft == "python" then
         vim.opt_local.shiftwidth = 4
