@@ -34,7 +34,7 @@ endfunction
 "}}}
 
 hi Cursor guifg=bg guibg=fg ctermfg=0 ctermbg=11
-hi CursorLine     ctermbg=#cc5534
+hi CursorLine   guifg=#F9F9F9 guibg=#d04040
 "hi CursorIM	
 hi Directory gui=bold
 hi DiffAdd guifg=yellow guibg=darkgreen ctermbg=0
