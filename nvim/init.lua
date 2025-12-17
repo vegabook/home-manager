@@ -241,6 +241,12 @@ vim.g.mapleader = ","
         vim.cmd.colorscheme("nightvision")
       end
 
+      elseif ft == "markdown" then
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.cmd.colorscheme("twilight")
+        vim.opt.background = "light"
+
       elseif ft == "r" then
         vim.opt_local.shiftwidth = 2
         vim.opt_local.tabstop = 2
