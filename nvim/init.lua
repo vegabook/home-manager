@@ -309,9 +309,11 @@ local function analyzeBufferContents()
     -- run arbitrary vim.cmd 
     elseif line:find("vimcmd") then
       -- strip out everything before and including "vimcmd" to extract the command 
-      local vcresult = line:match(".*vimcmd (.*)")
-      -- run the command
-      vim.cmd(vcresult)
+      local vcresults = line:match(".*vimcmd (.*)")
+      -- can have multiple in same line
+      for vcresult in string.gmatch(vcresults, "([^;]+)") do
+        vim.cmd(vcresult)
+      end
     end
   end
 end
