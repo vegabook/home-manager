@@ -1,0 +1,11 @@
+# aesthetics
+background-opacity = 0.8
+background-blur=3
+
+# typography
+font-size=16
+font-thicken=false
+
+# for tmux to work properly exports xterm-ghostty whatever
+shell-integration-features=ssh-env,ssh-terminfo
+

@@ -71,10 +71,9 @@ in
     nerd-fonts.lekton
     nerd-fonts.victor-mono
     nerd-fonts._3270
-    git-lfs
     tree-sitter
     ripgrep
-    zellij
+    ghostty-bin
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -192,6 +191,11 @@ in
     };  
     "./.config/wezterm" = {
       source = ./wezterm;
+      recursive = true;
+    };  
+
+    "./.config/ghostty" = {
+      source = ./ghostty;
       recursive = true;
     };  
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
