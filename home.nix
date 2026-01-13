@@ -73,7 +73,6 @@ in
     nerd-fonts._3270
     tree-sitter
     ripgrep
-    ghostty-bin
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your

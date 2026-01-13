@@ -23,21 +23,18 @@ if vim.fn.has("termguicolors") then
 end
 -- lazy plugins 
 local plugins = {
-  'EdenEast/nightfox.nvim',
---  'rockerBOO/boo-colorscheme-nvim',
-  'foxoman/vim-helix',
-  'shaunsingh/moonlight.nvim',
-  'nvim-tree/nvim-tree.lua',
-  'nyoom-engineering/oxocarbon.nvim',
-  'mathofprimes/nightvision-nvim',
-  'ribru17/bamboo.nvim',
-  'rockerBOO/boo-colorscheme-nvim',
-  'mlochbaum/BQN',
-  'slugbyte/lackluster.nvim',
-  'water-sucks/darkrose.nvim',
-  {
-    "github/copilot.vim"
-  },
+  "EdenEast/nightfox.nvim",
+  "foxoman/vim-helix",
+  "shaunsingh/moonlight.nvim",
+  "nvim-tree/nvim-tree.lua",
+  "nyoom-engineering/oxocarbon.nvim",
+  "mathofprimes/nightvision-nvim",
+  "ribru17/bamboo.nvim",
+  "rockerBOO/boo-colorscheme-nvim",
+  "mlochbaum/BQN",
+  "slugbyte/lackluster.nvim",
+  "water-sucks/darkrose.nvim",
+  "github/copilot.vim",
   {
     "hat0uma/csvview.nvim",
     ---@module "csvview"
