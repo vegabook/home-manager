@@ -35,7 +35,9 @@ local plugins = {
   'mlochbaum/BQN',
   'slugbyte/lackluster.nvim',
   'water-sucks/darkrose.nvim',
-
+  {
+    "github/copilot.vim"
+  },
   {
     "hat0uma/csvview.nvim",
     ---@module "csvview"
