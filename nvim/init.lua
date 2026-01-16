@@ -284,6 +284,14 @@ vim.g.mapleader = ","
 
       end
 
+        vim.api.nvim_set_hl(0, "TabLineSel", {
+      fg = "#ff0000",          -- bright red foreground
+      bg = "#000000",          -- black background
+      -- bold = true,          -- remove or comment this if you don't want bold either
+      -- No gui= at all → defaults to normal/plain
+      -- OR explicitly: gui = "none"  (same effect)
+    })
+
     end,
   })
 
@@ -291,6 +299,7 @@ vim.g.mapleader = ","
 -- colorscheme per file in first 5 lines
 --
 local function analyzeBufferContents()
+  -- now check for colorscheme or vimcmd in first 5 lines
   local lines = vim.api.nvim_buf_get_lines(0, 0, 5, false)
   -- Example: Check if a specific string exists in the file
   for _, line in ipairs(lines) do
@@ -315,6 +324,16 @@ local function analyzeBufferContents()
       end
     end
   end
+
+  -- always override colors whatever the colorscheme
+  vim.api.nvim_set_hl(0, "TabLineSel", {
+    fg = "#dddddd",        
+    bg = "#000000",       
+  })
+  vim.api.nvim_set_hl(0, "TabLine", {
+    fg = "#999999",          
+    bg = "#333333",         
+  })
 end
 
 vim.api.nvim_create_autocmd(
