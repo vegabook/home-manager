@@ -233,12 +233,18 @@ vim.g.mapleader = ","
             require("boo-colorscheme").use({
               italic = true,
               theme = "boo",
-          })
+            })
+          end
+
+        elseif file_ext == "exs" then
+          vim.g.nv_contrast = "medium"
+          vim.cmd.colorscheme("nightvision")
         end
-      elseif file_ext == "exs" then
-        vim.g.nv_contrast = "medium"
-        vim.cmd.colorscheme("nightvision")
-      end
+
+      elseif ft == "typst" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.cmd.colorscheme("colorful")
 
       elseif ft == "markdown" then
         vim.opt_local.wrap = true
