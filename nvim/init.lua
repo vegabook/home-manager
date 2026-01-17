@@ -22,6 +22,7 @@ if vim.fn.has("termguicolors") then
   vim.opt.termguicolors = true
 end
 -- lazy plugins 
+--
 local plugins = {
   "EdenEast/nightfox.nvim",
   "foxoman/vim-helix",
@@ -89,11 +90,10 @@ local plugins = {
 local opts = {}
 local copilot_opts = {}
 
--- setup
---
---
+-- setup secion ------------------------------------------
 
 require("lazy").setup(plugins, opts)
+
 require("nvim-tree").setup({
   actions = {
     open_file = {
@@ -128,7 +128,7 @@ require("nvim-tree").setup({
 })
 
 
--- Global settings
+-- Global settings -----------------------
 vim.opt.modifiable = true
 vim.opt.number = true
 vim.opt.relativenumber = false
@@ -156,7 +156,7 @@ vim.opt.guicursor = {
 vim.g.mapleader = ","
 
 
--- Mappings
+-- Mappings -------------------------
 
   vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
   vim.keymap.set('n', '<Right>', ':tabn<cr>') 
@@ -349,4 +349,9 @@ vim.api.nvim_create_autocmd(
   {
     callback = analyzeBufferContents
   }
+
+
+
+
+
 )
