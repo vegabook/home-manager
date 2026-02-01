@@ -295,7 +295,7 @@ vim.g.mapleader = ","
         vim.opt_local.shiftwidth = 2
         vim.opt_local.tabstop = 2
         vim.opt.background = "dark"
-        vim.cmd.colorscheme("golded")
+        vim.cmd.colorscheme("base16-greenscreen")
 
       else
         vim.opt_local.shiftwidth = 2
