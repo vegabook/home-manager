@@ -291,6 +291,12 @@ vim.g.mapleader = ","
         vim.opt.background = "dark"
         vim.cmd.colorscheme("atom")
 
+      elseif ft == "bqn" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("golded")
+
       else
         vim.opt_local.shiftwidth = 2
         vim.opt_local.tabstop = 2
