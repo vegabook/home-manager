@@ -33,6 +33,7 @@ local plugins = {
   "ribru17/bamboo.nvim",
   "rockerBOO/boo-colorscheme-nvim",
   "mlochbaum/BQN",
+	"https://git.sr.ht/~detegr/nvim-bqn",
   "slugbyte/lackluster.nvim",
   "water-sucks/darkrose.nvim",
   "github/copilot.vim",
@@ -66,7 +67,7 @@ local plugins = {
 
         configs.setup({
             ensure_installed = { "python", "c", "lua", "vim", "vimdoc", 
-              "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig" },
+              "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig"},
             sync_install = false,
             highlight = { 
               enable = true, 
@@ -87,9 +88,17 @@ local plugins = {
 
 }
 
+-- add bqn filetype
+--
+vim.filetype.add({
+  extension = {
+    bqn = "bqn",
+  },
+})
+
+-- copilot
 local opts = {}
 local copilot_opts = {}
-
 -- setup secion ------------------------------------------
 
 require("lazy").setup(plugins, opts)
