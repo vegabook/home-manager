@@ -95,12 +95,13 @@ wezterm.on('change-radial-background', function(window, pane)
   }
 end)
 
+
 wezterm.on('change-scheme', function(window, pane)
-  local scheme = schemes[math.random(#schemes)]
-  window:set_config_overrides {
-    color_scheme = scheme,
-  }
+  local overrides = window:get_config_overrides() or {}
+  overrides.color_scheme = schemes[math.random(#schemes)]
+  window:set_config_overrides(overrides)
 end)
+
 
 config.keys = {
   {
