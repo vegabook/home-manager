@@ -63,15 +63,10 @@ end
 
 wezterm.on('change-font', function(window, pane)
   local newfont = fonts[math.random(#fonts)]
-  window:set_config_overrides {
-    font = wezterm.font(newfont),
-    font_size = 17.0, 
-  }
-  window:set_right_status(wezterm.format {
-    { Foreground = { Color = '#88c0d0' } },
-    { Text = '  Font: ' .. newfont .. '  ' },
-  })
-
+  local overrides = window:get_config_overrides() or {}
+  overrides.font = wezterm.font(newfont)
+  overrides.font_size = 17.0
+  window:set_config_overrides(overrides)
 end)
 
 
