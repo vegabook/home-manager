@@ -83,8 +83,10 @@ wezterm.on('change-radial-background', function(window, pane)
       colors = { color1, color2, color3 },
       orientation = {
         Radial = {
-          cx = 0.75,
-          cy = 0.75,
+          cx = math.random(),
+          cy = math.random(),
+          --cx = 0.75,
+          --cy = 0.75,
           radius = 1.1,
         },
       },
