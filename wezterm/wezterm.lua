@@ -95,6 +95,12 @@ wezterm.on('change-radial-background', function(window, pane)
   }
 end)
 
+wezterm.on('change-scheme', function(window, pane)
+  local scheme = schemes[math.random(#schemes)]
+  window:set_config_overrides {
+    color_scheme = scheme,
+  }
+end)
 
 config.keys = {
   {
@@ -106,6 +112,11 @@ config.keys = {
     key = 'G',
     mods = 'CTRL',
     action = wezterm.action.EmitEvent 'change-font',
+  },
+  {
+    key = 'S',
+    mods = 'CTRL',
+    action = wezterm.action.EmitEvent 'change-scheme',
   },
   {
     key = 'RightArrow',
