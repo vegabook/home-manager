@@ -82,6 +82,13 @@ in
     # '')
   ];           
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    vimAlias = true;
+    viAlias = true;
+  };
+
   programs.git = {
     enable = true;
     lfs.enable = true;
