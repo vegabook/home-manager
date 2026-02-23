@@ -1,0 +1,2 @@
+#!/bin/sh
+watch -n 1 'echo -n "number connected in: "; yggdrasilctl getpeers | grep "In" | wc -l; yggdrasilctl getpeers'

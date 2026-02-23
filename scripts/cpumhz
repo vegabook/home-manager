@@ -1,0 +1,2 @@
+#!/bin/sh
+watch -n1 'sensors | grep Core; echo "---"; cat /proc/cpuinfo | grep "cpu MHz"'
