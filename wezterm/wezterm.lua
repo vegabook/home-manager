@@ -30,8 +30,15 @@ local colors = {
     "White", "WhiteSmoke", "Yellow", "YellowGreen"
 }
 
+--local fonts = {
+--    "Iosevka NF", "VictorMono NF", "ComicShannsMono Nerd Font", "Lekton Nerd Font", "3270 Nerd Font"
+--}
+
 local fonts = {
-    "Iosevka NF", "VictorMono NF", "ComicShannsMono Nerd Font", "Lekton Nerd Font", "3270 Nerd Font"
+    "Iosevka NF", "VictorMono NF", "ComicShannsMono Nerd Font", "Lekton Nerd Font", "3270 Nerd Font",
+    "BlexMono Nerd Font", "JetBrainsMono Nerd Font", "CaskaydiaCove Nerd Font", "FiraCode Nerd Font",
+    "Hack Nerd Font", "Mononoki Nerd Font", "DaddyTimeMono Nerd Font", "EnvyCodeR Nerd Font",
+    "FantasqueSansMono Nerd Font"
 }
 
 

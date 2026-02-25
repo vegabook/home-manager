@@ -62,15 +62,22 @@ in
     bqn386
     chafa # sixel viewer
     fuse
-    neovim
     nodejs
     asciinema
-    bqn386
     nerd-fonts.iosevka
     nerd-fonts.comic-shanns-mono
     nerd-fonts.lekton
     nerd-fonts.victor-mono
     nerd-fonts._3270
+    nerd-fonts.blex-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.caskaydia-cove
+    nerd-fonts.fira-code
+    nerd-fonts.hack
+    nerd-fonts.mononoki
+    nerd-fonts.daddy-time-mono
+    nerd-fonts.envy-code-r
+    nerd-fonts.fantasque-sans-mono
     tree-sitter
     ripgrep
 
