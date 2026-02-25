@@ -3,7 +3,6 @@ local config = {}
 
 config.font = wezterm.font 'Iosevka NF'
 
-
 config.font_size = 17.0 
 
 config.enable_tab_bar = false
@@ -33,12 +32,12 @@ local colors = {
 --local fonts = {
 --    "Iosevka NF", "VictorMono NF", "ComicShannsMono Nerd Font", "Lekton Nerd Font", "3270 Nerd Font"
 --}
+local current_font_idx = 1
 
 local fonts = {
     "Iosevka NF", "VictorMono NF", "ComicShannsMono Nerd Font", "Lekton Nerd Font", "3270 Nerd Font",
     "BlexMono Nerd Font", "JetBrainsMono Nerd Font", "CaskaydiaCove Nerd Font", "FiraCode Nerd Font",
-    "Hack Nerd Font", "Mononoki Nerd Font", "DaddyTimeMono Nerd Font", "EnvyCodeR Nerd Font",
-    "FantasqueSansMono Nerd Font"
+    "Hack Nerd Font", "Mononoki Nerd Font", "DaddyTimeMono Nerd Font", "EnvyCodeR Nerd Font"
 }
 
 
@@ -68,14 +67,23 @@ function chooseThreeColors()
     return colors[index1], colors[index2], colors[index3]
 end
 
+--wezterm.on('change-font', function(window, pane)
+--  local newfont = fonts[math.random(#fonts)]
+--  local overrides = window:get_config_overrides() or {}
+--  overrides.font = wezterm.font(newfont)
+--  overrides.font_size = 17.0
+--  window:set_config_overrides(overrides)
+--end)
+
 wezterm.on('change-font', function(window, pane)
-  local newfont = fonts[math.random(#fonts)]
+  current_font_idx = (current_font_idx % #fonts) + 1
+  local newfont = fonts[current_font_idx]
   local overrides = window:get_config_overrides() or {}
   overrides.font = wezterm.font(newfont)
   overrides.font_size = 17.0
   window:set_config_overrides(overrides)
+  wezterm.log_info("Font changed to: " .. newfont)
 end)
-
 
 wezterm.on('change-radial-background', function(window, pane)
   local color1, color2, color3 = chooseThreeColors()
