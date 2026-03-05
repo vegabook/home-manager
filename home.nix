@@ -130,7 +130,7 @@ in
       vim = "nvim";
       sd="cd ~ && cd \$(find * -type d | fzf)";
     };
-    initContent = ''
+    initExtra = ''
       make_superscript () { sed 'y/0123456789/⁰¹²³⁴⁵⁶⁷⁸⁹/' <<< $SHLVL; };
       direnv_yes () { env | grep DIRENV_DIR | wc -l | sed 's/[0 ]//g'; };
       nixshell_yes () { env | grep IN_NIX_SHELL | wc -l | sed 's/[0 ]//g'; };
@@ -140,6 +140,12 @@ in
       PATH=${config.home.homeDirectory}/scripts:$PATH;
       NIXPKGS_ALLOW_UNFREE=1;
       setopt rmstarsilent
+
+      # Export secrets as environment variables
+      export OPENROUTER_API_KEY="$(cat ${config.sops.secrets.openrouter_api_key.path} 2>/dev/null || true)"
+      export WHATSAPP_TOKEN="$(cat ${config.sops.secrets.whatsapp_token.path} 2>/dev/null || true)"
+      export XAI_API_KEY="$(cat ${config.sops.secrets.xai_api_key.path} 2>/dev/null || true)"
+      export MASSIVE_API_KEY="$(cat ${config.sops.secrets.massive_api_key.path} 2>/dev/null || true)"
     '';
   } else {
     enable = false;
