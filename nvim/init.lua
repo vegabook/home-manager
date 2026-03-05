@@ -365,9 +365,30 @@ vim.api.nvim_create_autocmd(
   {
     callback = analyzeBufferContents
   }
-
-
-
-
-
 )
+
+
+-- Claude integration -----------------------
+
+-- Auto-reload files when Claude edits them
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "BufEnter", "CursorHold" }, {
+  callback = function() vim.cmd("checktime") end,
+})
+
+-- One-key yank: file path + current buffer (or visual selection)
+vim.keymap.set("n", "<leader>yc", function()
+  local path = vim.fn.expand("%:.")
+  local content = table.concat(vim.fn.getline(1, "$"), "\n")
+  vim.fn.setreg("+", path .. "\n\n" .. content)
+  print("✓ Yanked path + buffer to clipboard for Claude")
+end, { desc = "Yank for Claude" })
+
+vim.keymap.set("v", "<leader>yc", function()
+  local path = vim.fn.expand("%:.")
+  local start = vim.fn.line("'<")
+  local finish = vim.fn.line("'>")
+  local content = table.concat(vim.fn.getline(start, finish), "\n")
+  vim.fn.setreg("+", path .. "\n\n" .. content)
+  print("✓ Yanked path + selection to clipboard for Claude")
+end, { desc = "Yank selection for Claude" })
