@@ -378,14 +378,16 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "BufEnter", "CursorHol
 
 -- One-key yank: file path + current buffer (or visual selection)
 vim.keymap.set("n", "<leader>yc", function()
-  local path = vim.fn.expand("%:.")
+  local path = vim.fn.expand("%:p")
   local content = table.concat(vim.fn.getline(1, "$"), "\n")
   vim.fn.setreg("+", path .. "\n\n" .. content)
   print("✓ Yanked path + buffer to clipboard for Claude")
 end, { desc = "Yank for Claude" })
 
 vim.keymap.set("v", "<leader>yc", function()
-  local path = vim.fn.expand("%:.")
+  local path = vim.fn.expand("%:p")
+  -- Exit visual mode first so '< and '> marks are set correctly
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
   local start = vim.fn.line("'<")
   local finish = vim.fn.line("'>")
   local content = table.concat(vim.fn.getline(start, finish), "\n")
