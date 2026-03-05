@@ -9,14 +9,16 @@ let
       rev = rev;
     };
   };
-  username = builtins.getEnv "USER";
-  path = builtins.getEnv "PATH";
-  homeDirectory = builtins.getEnv "HOME";
-  isLinux = builtins.currentSystem == "x86_64-linux" || builtins.currentSystem == "aarch64-linux";
-  isDarwin = builtins.currentSystem == "aarch64-darwin";
-  hostname = builtins.getEnv "HOSTNAME"; 
+  isLinux = pkgs.stdenv.isLinux;
+  isDarwin = pkgs.stdenv.isDarwin; 
 in
-let tmuxbg = if hostname == "rpi4" then "colour204"
+let
+  # Read hostname - /etc/hostname exists on Linux, use networking.hostName on NixOS, or fall back to "unknown"
+  hostname =
+    if builtins.pathExists /etc/hostname
+    then lib.strings.removeSuffix "\n" (builtins.readFile /etc/hostname)
+    else "unknown";
+  tmuxbg = if hostname == "rpi4" then "colour204"
              else if hostname == "scen7" then "colour59"
              else if hostname == "logicLHR" then "colour9"
              else if hostname == "bee" then "colour40"
@@ -37,8 +39,8 @@ in
   targets.genericLinux.enable = isLinux;
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = username;
-  home.homeDirectory = homeDirectory;
+  home.username = "tbrowne";
+  home.homeDirectory = "/home/tbrowne";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -135,7 +137,7 @@ in
       echoer () { export PROMPT="%f%F{yellow}$(nixshell_yes)%f%F{red}$(make_superscript)%f%F{green}%n@%m %F{$016}%~%f %F{green}❯%f " };
       precmd_functions+=(echoer);
       CLICOLOR=1;
-      PATH=${homeDirectory}/scripts:$PATH;
+      PATH=${config.home.homeDirectory}/scripts:$PATH;
       NIXPKGS_ALLOW_UNFREE=1;
       setopt rmstarsilent
     '';
@@ -187,6 +189,32 @@ in
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
+  # sops configuration
+  sops = {
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+    defaultSopsFile = ./secrets.yaml;
+
+    secrets = {
+      openrouter_api_key = {};
+      whatsapp_token = {};
+      xai_api_key = {};
+      massive_api_key = {};
+    };
+  };
+
+  # Set environment variables from secrets
+  home.sessionVariables = {
+    NIXPKGS_ALLOW_UNFREE = 1;
+  };
+
+  # Export secrets as environment variables in shell init
+  programs.bash.initExtra = ''
+    export OPENROUTER_API_KEY="$(cat ${config.sops.secrets.openrouter_api_key.path} 2>/dev/null || true)"
+    export WHATSAPP_TOKEN="$(cat ${config.sops.secrets.whatsapp_token.path} 2>/dev/null || true)"
+    export XAI_API_KEY="$(cat ${config.sops.secrets.xai_api_key.path} 2>/dev/null || true)"
+    export MASSIVE_API_KEY="$(cat ${config.sops.secrets.massive_api_key.path} 2>/dev/null || true)"
+  '';
+
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -234,10 +262,6 @@ in
   #  /etc/profiles/per-user/mmai/etc/profile.d/hm-session-vars.sh
   #
   # if you don't want to manage your shell through Home Manager.
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-    NIXPKGS_ALLOW_UNFREE=1;
-  };
 
   home.shellAliases = { 
     vim = "nvim"; 
