@@ -73,23 +73,46 @@ home-manager switch --flake .#tbrowne
    cd ~/.config/home-manager
    nix-shell -p sops --run "sops secrets.yaml"
    ```
+   This will open the file in your editor. Add your new secret in the same format:
+   ```yaml
+   my_new_api_key: your-secret-value-here
+   ```
+   Save and exit - sops will automatically re-encrypt it.
 
 2. **Add the secret to home.nix**:
+   Edit `home.nix` and add your new secret to the `sops.secrets` section:
    ```nix
    sops.secrets = {
-     # ... existing secrets ...
-     my_new_secret = {};
-   };
-
-   home.sessionVariables = {
-     # ... existing vars ...
-     MY_NEW_SECRET = "$(cat ${config.sops.secrets.my_new_secret.path})";
+     openrouter_api_key = {};
+     whatsapp_token = {};
+     xai_api_key = {};
+     massive_api_key = {};
+     my_new_api_key = {};  # Add this line
    };
    ```
 
-3. **Rebuild**:
+3. **Export it as an environment variable**:
+   In the same `home.nix`, add the export to the `programs.bash.initExtra` section:
+   ```nix
+   programs.bash.initExtra = ''
+     export OPENROUTER_API_KEY="$(cat ${config.sops.secrets.openrouter_api_key.path} 2>/dev/null || true)"
+     export WHATSAPP_TOKEN="$(cat ${config.sops.secrets.whatsapp_token.path} 2>/dev/null || true)"
+     export XAI_API_KEY="$(cat ${config.sops.secrets.xai_api_key.path} 2>/dev/null || true)"
+     export MASSIVE_API_KEY="$(cat ${config.sops.secrets.massive_api_key.path} 2>/dev/null || true)"
+     export MY_NEW_API_KEY="$(cat ${config.sops.secrets.my_new_api_key.path} 2>/dev/null || true)"
+   '';
+   ```
+
+4. **Rebuild**:
    ```bash
-   home-manager switch --flake .#tbrowne
+   cd ~/.config/home-manager
+   ./switch.sh
+   # Or: home-manager switch --flake .#tbrowne
+   ```
+
+5. **Reload your shell or start a new terminal**:
+   ```bash
+   source ~/.bashrc
    ```
 
 ## Your Age Public Key
