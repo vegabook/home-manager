@@ -26,14 +26,13 @@
           sops-nix.homeManagerModules.sops
         ];
       };
-    in {
-      homeConfigurations = {
-        # Linux configuration
-        "tbrowne" = mkHome "x86_64-linux";
 
-        # macOS configuration (if needed on different machines)
-        "tbrowne@aarch64-darwin" = mkHome "aarch64-darwin";
-        "tbrowne@x86_64-darwin" = mkHome "x86_64-darwin";
-      };
+      # Support all common systems
+      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+    in {
+      homeConfigurations = builtins.listToAttrs (map (system: {
+        name = "tbrowne";
+        value = mkHome system;
+      }) systems);
     };
 }
