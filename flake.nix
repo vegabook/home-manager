@@ -26,13 +26,18 @@
           sops-nix.homeManagerModules.sops
         ];
       };
-
-      # Support all common systems
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
     in {
-      homeConfigurations = builtins.listToAttrs (map (system: {
-        name = "tbrowne";
-        value = mkHome system;
-      }) systems);
+      homeConfigurations = {
+        # Linux configurations
+        "tbrowne@x86_64-linux" = mkHome "x86_64-linux";
+        "tbrowne@aarch64-linux" = mkHome "aarch64-linux";
+
+        # macOS configurations
+        "tbrowne@aarch64-darwin" = mkHome "aarch64-darwin";
+        "tbrowne@x86_64-darwin" = mkHome "x86_64-darwin";
+
+        # Default for backwards compatibility (Linux x86_64)
+        "tbrowne" = mkHome "x86_64-linux";
+      };
     };
 }
