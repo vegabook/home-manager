@@ -38,19 +38,6 @@ local plugins = {
   "water-sucks/darkrose.nvim",
   "github/copilot.vim",
   {
-    "olimorris/codecompanion.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = {
-      -- NOTE: The log_level is in `opts.opts`
-      opts = {
-        log_level = "DEBUG", -- or "TRACE"
-      },
-    },
-  },
-  {
     "hat0uma/csvview.nvim",
     ---@module "csvview"
     ---@type CsvView.Options
@@ -114,21 +101,7 @@ local opts = {}
 local copilot_opts = {}
 -- setup section ------------------------------------------
 --
-require("codecompanion").setup({
-  adapters = {
-    acp = {
-      claude_code = function()
-        return require("codecompanion.adapters").extend("claude_code", {
-          defaults = {
-            model = "opus"
-          },
-        })
-      end,
-    }
-  },
-}),
-
-
+--
 require("lazy").setup(plugins, opts)
 
 require("nvim-tree").setup({
