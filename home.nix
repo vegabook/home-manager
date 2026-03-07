@@ -138,6 +138,9 @@ in
       export XAI_API_KEY="$(cat ${config.sops.secrets.xai_api_key.path} 2>/dev/null || true)"
       export MASSIVE_API_KEY="$(cat ${config.sops.secrets.massive_api_key.path} 2>/dev/null || true)"
       export ANTHROPIC_API_KEY="$(cat ${config.sops.secrets.anthropic_api_key.path} 2>/dev/null || true)"
+      export MASSIVE_AWS_ACCESS_KEY_ID="$(cat ${config.sops.secrets.massive_aws_access_key_id.path} 2>/dev/null || true)"
+      export MASSIVE_AWS_SECRET_ACCESS_KEY="$(cat ${config.sops.secrets.massive_aws_secret_access_key.path} 2>/dev/null || true)"
+
     '';
   } else {
     enable = false;
@@ -198,6 +201,8 @@ in
       xai_api_key = {};
       massive_api_key = {};
       anthropic_api_key = {};
+      massive_aws_access_key_id = {};
+      massive_aws_secret_access_key = {};
     };
   };
 
@@ -213,6 +218,8 @@ in
     export XAI_API_KEY="$(cat ${config.sops.secrets.xai_api_key.path} 2>/dev/null || true)"
     export MASSIVE_API_KEY="$(cat ${config.sops.secrets.massive_api_key.path} 2>/dev/null || true)"
     export ANTHROPIC_API_KEY="$(cat ${config.sops.secrets.anthropic_api_key.path} 2>/dev/null || true)"
+    export MASSIVE_AWS_ACCESS_KEY_ID="$(cat ${config.sops.secrets.massive_aws_access_key_id.path} 2>/dev/null || true)"
+    export MASSIVE_AWS_SECRET_ACCESS_KEY="$(cat ${config.sops.secrets.massive_aws_secret_access_key.path} 2>/dev/null || true)"
   '';
 
 
