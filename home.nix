@@ -24,15 +24,6 @@ let
              else if hostname == "bee" then "colour40"
              else "colour255";
 in
-#let
-#  tmuxbg = {
-#    "rpi4" = "colour163";
-#    "scen7" = "colour59";
-#    "logicLHR" = "colour9";
-#    "bee" = "colour40";
-#  }.${hostname};
-#in
-
 
 {
   # are we on Linux?
