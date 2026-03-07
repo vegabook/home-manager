@@ -18,10 +18,10 @@ let
     if builtins.pathExists /etc/hostname
     then lib.strings.removeSuffix "\n" (builtins.readFile /etc/hostname)
     else "unknown";
-  tmuxbg = if hostname == "rpi4" then "colour204"
-             else if hostname == "scen7" then "colour59"
+  tmuxbg = if hostname == "Mac" then "colour204"
+             else if hostname == "bee" then "colour59"
              else if hostname == "logicLHR" then "colour9"
-             else if hostname == "bee" then "colour40"
+             else if hostname == "rpi4" then "colour40"
              else "colour255";
 in
 
@@ -97,7 +97,7 @@ in
 
   programs.tmux = {
     enable = true;
-    plugins = with pkgs; [ tmuxPlugins.cpu ];
+    plugins = with pkgs; [ tmuxPlugins.sysstat ];
     extraConfig = ''
       bind -n C-h select-pane -L
       bind -n C-j select-pane -D
@@ -111,7 +111,7 @@ in
       set -ag terminal-overrides ",*256col*:Tc"
       set -g escape-time 0
       set -g status-interval 5
-      set -g status-right "CPU: #{cpu_percentage} RAM: #{ram_percentage} %Y-%m-%d %H:%M:%S"
+      set -g status-right "#{sysstat_cpu} #{sysstat_mem} %Y-%m-%d %H:%M:%S"
     '';
   };
 
