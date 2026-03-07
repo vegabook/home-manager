@@ -97,18 +97,21 @@ in
 
   programs.tmux = {
     enable = true;
+    plugins = with pkgs; [ tmuxPlugins.cpu ];
     extraConfig = ''
       bind -n C-h select-pane -L
       bind -n C-j select-pane -D
       bind -n C-k select-pane -U
       bind -n C-l select-pane -R
       set -g status-bg ${tmuxbg}
-            
+
       set -g mouse on
 
       set -g default-terminal "tmux-256color"
       set -ag terminal-overrides ",*256col*:Tc"
       set -g escape-time 0
+      set -g status-interval 5
+      set -g status-right "CPU: #{cpu_percentage} RAM: #{ram_percentage} %Y-%m-%d %H:%M:%S"
     '';
   };
 
@@ -230,48 +233,17 @@ in
       source = ./nvim;
       recursive = true;
     };  
-    "./.config/helix" = {
-      source = ./helix;
-      recursive = true;
-    };  
-    "./.config/zellij" = {
-      source = ./zellij;
-      recursive = true;
-    };  
     "./.config/wezterm" = {
       source = ./wezterm;
       recursive = true;
     };  
-    "./.config/ghostty" = {
-      source = ./ghostty;
-      recursive = true;
-    };  
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    "./.config/clause" = {
+    "./.config/claude" = {
       source = ./claude;
       recursive = true;
     };  
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
   };
 
-  # You can also manage environment variables but you will have to manually
-  # source
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/mmai/etc/profile.d/hm-session-vars.sh
-  #
-  # if you don't want to manage your shell through Home Manager.
 
   home.shellAliases = { 
     vim = "nvim"; 
