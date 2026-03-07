@@ -244,12 +244,15 @@ in
       source = ./wezterm;
       recursive = true;
     };  
-
     "./.config/ghostty" = {
       source = ./ghostty;
       recursive = true;
     };  
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+    "./.config/clause" = {
+      source = ./claude;
+      recursive = true;
+    };  
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
