@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hostname ? "unknown", ... }:
 
 let
   fromGitHub = rev: repo: pkgs.vimUtils.buildVimPluginFrom2Nix {
@@ -10,22 +10,13 @@ let
     };
   };
   isLinux = pkgs.stdenv.isLinux;
-  isDarwin = pkgs.stdenv.isDarwin; 
-in
-let
-  # Read hostname - /etc/hostname exists on Linux, use networking.hostName on NixOS, or fall back to "unknown"
-  hostname =
-    if builtins.pathExists /etc/hostname
-    then lib.strings.removeSuffix "\n" (builtins.readFile /etc/hostname)
-    else "unknown";
+  isDarwin = pkgs.stdenv.isDarwin;
   tmuxbg = if hostname == "Mac" then "colour204"
-             else if hostname == "bee" then "colour59"
-             else if hostname == "logicLHR" then "colour9"
-             else if hostname == "rpi4" then "colour40"
-             else "colour255";
-in
-
-{
+           else if hostname == "bee" then "colour59"
+           else if hostname == "logicLHR" then "colour9"
+           else if hostname == "rpi4" then "colour40"
+           else "colour255";
+in {
   # are we on Linux?
   targets.genericLinux.enable = isLinux;
   # Home Manager needs a bit of information about you and the paths it should
@@ -97,21 +88,20 @@ in
 
   programs.tmux = {
     enable = true;
-    plugins = with pkgs; [ tmuxPlugins.sysstat ];
+    terminal = "tmux-256color";
+    escapeTime = 0;
+    historyLimit = 20000;
+    mouse = true;
+    keyMode = "emacs";
     extraConfig = ''
       bind -n C-h select-pane -L
       bind -n C-j select-pane -D
       bind -n C-k select-pane -U
       bind -n C-l select-pane -R
       set -g status-bg ${tmuxbg}
-      set -g history-limit 20000
-      set -g mouse on
-
-      set -g default-terminal "tmux-256color"
       set -ag terminal-overrides ",*256col*:Tc"
-      set -g escape-time 0
-      set -g status-interval 5
-      set -g status-right "#{sysstat_cpu} #{sysstat_mem} %Y-%m-%d %H:%M:%S"
+      set -g status-interval 3
+      set -g status-right "%Y-%m-%d %H:%M:%S"
     '';
   };
 
