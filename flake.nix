@@ -29,16 +29,10 @@
       };
     in {
       homeConfigurations = {
-        # Linux configurations
-        "tbrowne@x86_64-linux" = mkHome "x86_64-linux" "bee";
-        "tbrowne@aarch64-linux" = mkHome "aarch64-linux" "rpi4";
-
-        # macOS configurations
-        "tbrowne@aarch64-darwin" = mkHome "aarch64-darwin" "Mac";
-        "tbrowne@x86_64-darwin" = mkHome "x86_64-darwin" "logicLHR";
-
-        # Default for backwards compatibility (Linux x86_64)
-        "tbrowne" = mkHome "x86_64-linux" "bee";
+        "bee" = mkHome "x86_64-linux" "bee";
+        "logicLHR" = mkHome "x86_64-linux" "logicLHR";
+        "rpi4" = mkHome "aarch64-linux" "rpi4";
+        "Mac" = mkHome "aarch64-darwin" "Mac";
       };
     };
 }
