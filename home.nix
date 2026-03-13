@@ -104,7 +104,7 @@ in
       bind -n C-k select-pane -U
       bind -n C-l select-pane -R
       set -g status-bg ${tmuxbg}
-
+      set -g history-limit 20000
       set -g mouse on
 
       set -g default-terminal "tmux-256color"
