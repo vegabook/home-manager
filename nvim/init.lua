@@ -379,7 +379,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "BufEnter", "CursorHol
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function()
     local orig = vim.api.nvim_get_hl(0, { name = "Normal" })
-    vim.api.nvim_set_hl(0, "Normal", { bg = "#ff0000", fg = "#ffffff" })
+    vim.api.nvim_set_hl(0, "Normal", { bg = "#550000", fg = "#000000" })
     vim.defer_fn(function()
       vim.api.nvim_set_hl(0, "Normal", orig)
       vim.cmd("redraw")
