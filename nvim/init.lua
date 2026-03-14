@@ -372,8 +372,19 @@ vim.api.nvim_create_autocmd(
 
 -- Auto-reload files when Claude edits them
 vim.opt.autoread = true
-vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "BufEnter", "CursorHold" }, {
+vim.opt.updatetime = 1000
+vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "BufEnter", "CursorHold", "CursorHoldI" }, {
   callback = function() vim.cmd("checktime") end,
+})
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  callback = function()
+    local orig = vim.api.nvim_get_hl(0, { name = "Normal" })
+    vim.api.nvim_set_hl(0, "Normal", { bg = "#ff0000", fg = "#ffffff" })
+    vim.defer_fn(function()
+      vim.api.nvim_set_hl(0, "Normal", orig)
+      vim.cmd("redraw")
+    end, 150)
+  end,
 })
 
 -- One-key yank: file path + current buffer (or visual selection)
