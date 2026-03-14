@@ -11,11 +11,12 @@ let
   };
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
-  tmuxbg = if hostname == "Mac" then "colour204"
-           else if hostname == "bee" then "colour240"
-           else if hostname == "logicLHR" then "colour9"
-           else if hostname == "rpi4" then "colour40"
-           else "colour255";
+  tmuxColors = {
+    Mac      = { bg = "colour204"; fg = "colour0"; };
+    bee      = { bg = "colour240"; fg = "colour249"; };
+    logicLHR = { bg = "colour9";   fg = "colour255"; };
+    rpi4     = { bg = "colour40";  fg = "colour0"; };
+  }.${hostname} or { bg = "colour255"; fg = "colour0"; };
 in {
   # are we on Linux?
   targets.genericLinux.enable = isLinux;
@@ -98,7 +99,8 @@ in {
       bind -n C-j select-pane -D
       bind -n C-k select-pane -U
       bind -n C-l select-pane -R
-      set -g status-bg ${tmuxbg}
+      set -g status-bg ${tmuxColors.bg}
+      set -g status-fg ${tmuxColors.fg}
       set -ag terminal-overrides ",*256col*:Tc"
       set -g status-interval 3
       set -g status-right "%Y-%m-%d %H:%M:%S"
