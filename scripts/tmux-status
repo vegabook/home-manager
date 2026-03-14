@@ -1,0 +1,64 @@
+#!/bin/sh
+# Tmux status-right script: memory, per-core CPU %, CPU temps
+STATEFILE="/tmp/.tmux-cpu-prev"
+
+# --- Memory ---
+read -r _ total _ < /proc/meminfo
+read -r _ _ < /dev/null
+mem_total=$(awk '/^MemTotal/ {t=$2} /^MemAvailable/ {a=$2} END {printf "%.1f/%.1fG", (t-a)/1048576, t/1048576}' /proc/meminfo)
+
+# --- Per-core CPU % (compare to previous snapshot) ---
+# Read current cpu line values for cpu0-cpu3
+curr_file=$(mktemp)
+grep '^cpu[0-3] ' /proc/stat > "$curr_file"
+
+if [ -f "$STATEFILE" ]; then
+  # Calculate per-core usage
+  cpu_bars=""
+  for i in 0 1 2 3; do
+    prev=$(grep "^cpu${i} " "$STATEFILE")
+    curr=$(grep "^cpu${i} " "$curr_file")
+    if [ -n "$prev" ] && [ -n "$curr" ]; then
+      pct=$(echo "$prev" "$curr" | awk '{
+        # prev fields: $1=cpuN $2=user $3=nice $4=system $5=idle $6=iowait $7=irq $8=softirq $9=steal $10=guest $11=guest_nice
+        pu=$2; pn=$3; ps=$4; pi=$5; pw=$6; pr=$7; psi=$8; pst=$9
+        # curr fields start at $12 (or after re-reading)
+      }
+      END{}')
+      # Simpler: use awk on both lines
+      pct=$(echo "$prev
+$curr" | awk -v core="cpu${i}" '
+        /^cpu/ {
+          u[NR]=$2; n[NR]=$3; s[NR]=$4; id[NR]=$5; w[NR]=$6; ir[NR]=$7; si[NR]=$8; st[NR]=$9
+        }
+        END {
+          prev_total = u[1]+n[1]+s[1]+id[1]+w[1]+ir[1]+si[1]+st[1]
+          curr_total = u[2]+n[2]+s[2]+id[2]+w[2]+ir[2]+si[2]+st[2]
+          prev_idle = id[1]+w[1]
+          curr_idle = id[2]+w[2]
+          dt = curr_total - prev_total
+          di = curr_idle - prev_idle
+          if (dt > 0) printf "%3.0f﹪", (dt-di)*100/dt
+          else printf "  0﹪"
+        }')
+      cpu_bars="${cpu_bars}${pct} "
+    else
+      cpu_bars="${cpu_bars}  ? "
+    fi
+  done
+else
+  cpu_bars="  ?   ?   ?   ? "
+fi
+
+cp "$curr_file" "$STATEFILE"
+rm -f "$curr_file"
+
+# --- CPU Temps (from sensors, per-core) ---
+temps=$(sensors 2>/dev/null | awk '/^Core [0-3]:/ {
+  gsub(/\+/,"",$3); gsub(/°C/,"",$3); t=int($3)
+  if (t > 90) printf "#[fg=colour196]%d°#[fg=default] ", t
+  else printf "%d° ", t
+}')
+
+# --- Output ---
+printf "MEM:%s | CPU:%s| %s" "$mem_total" "$cpu_bars" "$temps"

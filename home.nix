@@ -104,7 +104,8 @@ in {
       set -g status-fg ${tmuxColors.fg}
       set -ag terminal-overrides ",*256col*:Tc"
       set -g status-interval 3
-      set -g status-right "%Y-%m-%d %H:%M:%S"
+      set -g status-right "#(~/scripts/tmux-status) | %H:%M:%S"
+      set -g status-right-length 80
     '';
   };
 
@@ -234,7 +235,11 @@ in {
     "./.config/claude" = {
       source = ./claude;
       recursive = true;
-    };  
+    };
+    "./scripts/tmux-status" = {
+      source = ./scripts/tmux-status;
+      executable = true;
+    };
   };
 
 
