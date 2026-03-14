@@ -12,7 +12,7 @@ let
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
   tmuxbg = if hostname == "Mac" then "colour204"
-           else if hostname == "bee" then "colour242"
+           else if hostname == "bee" then "colour240"
            else if hostname == "logicLHR" then "colour9"
            else if hostname == "rpi4" then "colour40"
            else "colour255";
