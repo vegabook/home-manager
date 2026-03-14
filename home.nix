@@ -21,6 +21,8 @@ in {
   # are we on Linux?
   targets.genericLinux.enable = isLinux;
   targets.genericLinux.nixGL.defaultWrapper = "none";
+  # can the gpu on bee mini pc
+  targets.genericLinux.gpu.enable = isLinux && hostname != "bee";
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "tbrowne";
