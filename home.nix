@@ -106,8 +106,8 @@ in {
       set -g status-fg ${tmuxColors.fg}
       set -ag terminal-overrides ",*256col*:Tc"
       set -g status-interval 3
-      set -g status-right "#(~/scripts/tmux-status) | %H:%M:%S"
-      set -g status-right-length 80
+      set -g status-right "#(~/scripts/tmux-status)"
+      set -g status-right-length 120
     '';
   };
 
