@@ -1,67 +1,62 @@
 #!/bin/sh
-# Tmux status-right script: memory, per-core CPU %, CPU temps
+# Tmux status-right script: memory, swap, avg CPU % with meter, temps, date/time
 STATEFILE="/tmp/.tmux-cpu-prev"
 
 # --- Memory ---
-read -r _ total _ < /proc/meminfo
-read -r _ _ < /dev/null
 mem_total=$(awk '/^MemTotal/ {t=$2} /^MemAvailable/ {a=$2} END {printf "%.1f/%.1fG", (t-a)/1048576, t/1048576}' /proc/meminfo)
 
 # --- Swap ---
 swap=$(awk '/^SwapTotal/ {t=$2} /^SwapFree/ {f=$2} END {printf "%.1f/%.1fG", (t-f)/1048576, t/1048576}' /proc/meminfo)
 
-# --- Per-core CPU % (compare to previous snapshot) ---
-# Read current cpu line values for cpu0-cpu3
+# --- Average CPU % (compare to previous snapshot) ---
 curr_file=$(mktemp)
 grep '^cpu[0-3] ' /proc/stat > "$curr_file"
 
 if [ -f "$STATEFILE" ]; then
-  # Calculate per-core usage
-  cpu_bars=""
-  for i in 0 1 2 3; do
-    prev=$(grep "^cpu${i} " "$STATEFILE")
-    curr=$(grep "^cpu${i} " "$curr_file")
-    if [ -n "$prev" ] && [ -n "$curr" ]; then
-      pct=$(echo "$prev" "$curr" | awk '{
-        # prev fields: $1=cpuN $2=user $3=nice $4=system $5=idle $6=iowait $7=irq $8=softirq $9=steal $10=guest $11=guest_nice
-        pu=$2; pn=$3; ps=$4; pi=$5; pw=$6; pr=$7; psi=$8; pst=$9
-        # curr fields start at $12 (or after re-reading)
-      }
-      END{}')
-      # Simpler: use awk on both lines
-      pct=$(echo "$prev
-$curr" | awk -v core="cpu${i}" '
-        /^cpu/ {
-          u[NR]=$2; n[NR]=$3; s[NR]=$4; id[NR]=$5; w[NR]=$6; ir[NR]=$7; si[NR]=$8; st[NR]=$9
-        }
-        END {
-          prev_total = u[1]+n[1]+s[1]+id[1]+w[1]+ir[1]+si[1]+st[1]
-          curr_total = u[2]+n[2]+s[2]+id[2]+w[2]+ir[2]+si[2]+st[2]
-          prev_idle = id[1]+w[1]
-          curr_idle = id[2]+w[2]
-          dt = curr_total - prev_total
-          di = curr_idle - prev_idle
-          if (dt > 0) printf "%3.0f﹪", (dt-di)*100/dt
-          else printf "  0﹪"
-        }')
-      cpu_bars="${cpu_bars}${pct} "
-    else
-      cpu_bars="${cpu_bars}  ? "
-    fi
-  done
+  cpu_info=$(awk '
+    NR==FNR { u[NR]=$2; n[NR]=$3; s[NR]=$4; id[NR]=$5; w[NR]=$6; ir[NR]=$7; si[NR]=$8; st[NR]=$9; next }
+    {
+      i=FNR
+      pu = u[i]+n[i]+s[i]+id[i]+w[i]+ir[i]+si[i]+st[i]
+      cu = $2+$3+$4+$5+$6+$7+$8+$9
+      pi = id[i]+w[i]
+      ci = $5+$6
+      dt = cu - pu
+      di = ci - pi
+      if (dt > 0) sum += (dt-di)*100/dt
+      count++
+    }
+    END {
+      avg = (count > 0) ? sum/count : 0
+      filled = int(avg * 15 / 100 + 0.5)
+      if (filled > 15) filled = 15
+      bar = ""
+      for (i = 1; i <= filled; i++) bar = bar "\xe2\x96\x92"
+      for (i = filled+1; i <= 15; i++) bar = bar "\xe2\x96\x91"
+      printf "%3.0f%% %s", avg, bar
+    }
+  ' "$STATEFILE" "$curr_file")
 else
-  cpu_bars="  ?   ?   ?   ? "
+  cpu_info="  ?% ░░░░░░░░░░░░░░░"
 fi
 
 cp "$curr_file" "$STATEFILE"
 rm -f "$curr_file"
 
-# --- CPU Temps (from sensors, per-core) ---
-temps=$(sensors 2>/dev/null | awk '/^Core [0-3]:/ {
-  gsub(/\+/,"",$3); gsub(/°C/,"",$3); t=int($3)
-  if (t >= 90) printf "#[fg=colour196]%d°#[fg=default] ", t
-  else printf "%d° ", t
+# --- CPU Temp (average of cores) ---
+avg_temp=$(sensors 2>/dev/null | awk '/^Core [0-3]:/ {
+  gsub(/\+/,"",$3); gsub(/°C/,"",$3); sum+=int($3); count++
+}
+END {
+  if (count > 0) {
+    avg = sum/count
+    if (avg >= 90) printf "#[fg=colour196]%d°#[fg=default]", avg
+    else printf "%d°", avg
+  } else printf "?°"
 }')
 
+# --- Date/Time ---
+datetime=$(date '+%b-%d %H:%M:%S')
+
 # --- Output ---
-printf "MEM: %s | SWP: %s | CPU:%s| %s" "$mem_total" "$swap" "$cpu_bars" "$temps"
+printf "MEM: %s | SWP: %s | CPU:%s | TEMP: %s | %s" "$mem_total" "$swap" "$cpu_info" "$avg_temp" "$datetime"
