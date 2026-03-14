@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 cd ~/.config/home-manager
 
-home-manager switch --flake ".#$(hostname)"
+home-manager switch --flake ".#$(hostname -s)"
