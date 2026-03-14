@@ -20,6 +20,7 @@ let
 in {
   # are we on Linux?
   targets.genericLinux.enable = isLinux;
+  targets.genericLinux.nixGL.defaultWrapper = "none";
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "tbrowne";
