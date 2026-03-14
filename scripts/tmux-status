@@ -7,6 +7,9 @@ read -r _ total _ < /proc/meminfo
 read -r _ _ < /dev/null
 mem_total=$(awk '/^MemTotal/ {t=$2} /^MemAvailable/ {a=$2} END {printf "%.1f/%.1fG", (t-a)/1048576, t/1048576}' /proc/meminfo)
 
+# --- Swap ---
+swap=$(awk '/^SwapTotal/ {t=$2} /^SwapFree/ {f=$2} END {printf "%.1f/%.1fG", (t-f)/1048576, t/1048576}' /proc/meminfo)
+
 # --- Per-core CPU % (compare to previous snapshot) ---
 # Read current cpu line values for cpu0-cpu3
 curr_file=$(mktemp)
@@ -56,9 +59,9 @@ rm -f "$curr_file"
 # --- CPU Temps (from sensors, per-core) ---
 temps=$(sensors 2>/dev/null | awk '/^Core [0-3]:/ {
   gsub(/\+/,"",$3); gsub(/°C/,"",$3); t=int($3)
-  if (t > 90) printf "#[fg=colour196]%d°#[fg=default] ", t
+  if (t >= 90) printf "#[fg=colour196]%d°#[fg=default] ", t
   else printf "%d° ", t
 }')
 
 # --- Output ---
-printf "MEM:%s | CPU:%s| %s" "$mem_total" "$cpu_bars" "$temps"
+printf "MEM: %s | SWP: %s | CPU:%s| %s" "$mem_total" "$swap" "$cpu_bars" "$temps"
