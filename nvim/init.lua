@@ -373,16 +373,20 @@ vim.api.nvim_create_autocmd(
 -- Auto-reload files when Claude edits them
 vim.opt.autoread = true
 vim.opt.updatetime = 1000
-vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "BufEnter", "CursorHold", "CursorHoldI" }, {
+vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "CursorHold", "CursorHoldI" }, {
   callback = function() vim.cmd("checktime") end,
 })
+local _claude_flashing = false
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function()
+    if _claude_flashing then return end
+    _claude_flashing = true
     local orig = vim.api.nvim_get_hl(0, { name = "Normal" })
     vim.api.nvim_set_hl(0, "Normal", { bg = "#550000", fg = "#000000" })
     vim.defer_fn(function()
       vim.api.nvim_set_hl(0, "Normal", orig)
       vim.cmd("redraw")
+      _claude_flashing = false
     end, 150)
   end,
 })
