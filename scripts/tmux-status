@@ -3,7 +3,11 @@
 STATEFILE="/tmp/.tmux-cpu-prev"
 
 # --- Memory ---
-mem_total=$(awk '/^MemTotal/ {t=$2} /^MemAvailable/ {a=$2} END {printf "%.1f/%.1fG", (t-a)/1048576, t/1048576}' /proc/meminfo)
+mem_total=$(awk '/^MemTotal/ {t=$2} /^MemAvailable/ {a=$2} END {
+  used=(t-a)/1048576; total=t/1048576
+  if (used/total > 0.8) printf "#[fg=yellow]%.1f#[fg=default]/%.1fG", used, total
+  else printf "%.1f/%.1fG", used, total
+}' /proc/meminfo)
 
 # --- Swap ---
 swap=$(awk '/^SwapTotal/ {t=$2} /^SwapFree/ {f=$2} END {printf "%.1f/%.1fG", (t-f)/1048576, t/1048576}' /proc/meminfo)
