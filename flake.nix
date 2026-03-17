@@ -33,6 +33,7 @@
         "logicLHR" = mkHome "x86_64-linux" "logicLHR";
         "rpi4" = mkHome "aarch64-linux" "rpi4";
         "Mac" = mkHome "aarch64-darwin" "Mac";
+	"mini10g" = mkHome "aarch64-darwin" "mini10g";
       };
     };
 }
