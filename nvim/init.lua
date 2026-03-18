@@ -64,9 +64,11 @@ local plugins = {
       build = ":TSUpdate",
       config = function ()
         require("nvim-treesitter.install").prefer_git = false
-        require("nvim-treesitter.install").ensure_installed({
-          "python", "c", "lua", "vim", "vimdoc",
-          "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig",
+        require("nvim-treesitter.configs").setup({
+          ensure_installed = {
+            "python", "c", "lua", "vim", "vimdoc",
+            "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig",
+          },
         })
       end
   },
