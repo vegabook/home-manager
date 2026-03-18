@@ -62,22 +62,12 @@ local plugins = {
   {
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",
-      config = function () 
-        local configs = require("nvim-treesitter.configs")
-
-        configs.setup({
-            ensure_installed = { "python", "c", "lua", "vim", "vimdoc", 
-              "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig"},
-            sync_install = false,
-            highlight = { 
-              enable = true, 
-            },
-            indent = { 
-              enable = true,
-            },  
-          })
-          local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-      ts_update()
+      config = function ()
+        require("nvim-treesitter.install").prefer_git = false
+        require("nvim-treesitter.install").ensure_installed({
+          "python", "c", "lua", "vim", "vimdoc",
+          "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig",
+        })
       end
   },
 
