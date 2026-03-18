@@ -59,18 +59,23 @@ local plugins = {
     },
     cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
   },
+
   {
       "nvim-treesitter/nvim-treesitter",
+      lazy = false,
       build = ":TSUpdate",
-      config = function ()
-        require("nvim-treesitter.install").prefer_git = false
-        require("nvim-treesitter.configs").setup({
-          ensure_installed = {
-            "python", "c", "lua", "vim", "vimdoc",
-            "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig",
-          },
+      config = function()
+        require("nvim-treesitter").install {
+          "python", "c", "lua", "vim", "vimdoc",
+          "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig",
+        }
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "*",
+          callback = function()
+            pcall(vim.treesitter.start)
+          end,
         })
-      end
+      end,
   },
 
   {
