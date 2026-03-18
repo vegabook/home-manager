@@ -239,7 +239,7 @@ in {
       recursive = true;
     };
     "./scripts/tmux-status" = {
-      source = ./scripts/tmux-status;
+      source = if isDarwin then ./scripts/tmux-status-darwin else ./scripts/tmux-status;
       executable = true;
     };
   };

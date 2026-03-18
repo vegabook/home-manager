@@ -1,0 +1,47 @@
+#!/bin/sh
+# Tmux status-right script for macOS: memory, swap, avg CPU % with meter, date/time
+
+# --- Memory ---
+page_size=$(sysctl -n hw.pagesize)
+mem_total=$(sysctl -n hw.memsize)
+mem=$(vm_stat | awk -v ps="$page_size" -v total="$mem_total" '
+  /Pages free:/ {gsub(/\./,"",$3); free=$3}
+  /Pages inactive:/ {gsub(/\./,"",$3); inactive=$3}
+  END {
+    avail = (free + inactive) * ps
+    used = (total - avail) / 1073741824
+    tot = total / 1073741824
+    if (used/tot > 0.8) printf "#[fg=colour190]%.1f#[fg=default]/%.1fG", used, tot
+    else printf "%.1f/%.1fG", used, tot
+  }
+')
+
+# --- Swap ---
+swap=$(sysctl -n vm.swapusage | awk '{
+  for (i=1; i<=NF; i++) {
+    if ($i == "total") { v=$(i+2); gsub(/M/,"",v); t=v }
+    if ($i == "used") { v=$(i+2); gsub(/M/,"",v); u=v }
+  }
+  printf "%.1f/%.1fG", u/1024, t/1024
+}')
+
+# --- CPU % (two iostat samples; second is current interval) ---
+cpu_info=$(iostat -c 2 -w 3 2>/dev/null | awk '
+  /^ +[0-9]/ { line++ }
+  line == 2 {
+    idle = $(NF-3)
+    used = 100 - idle
+    filled = int(used * 15 / 100 + 0.5)
+    if (filled > 15) filled = 15
+    bar = ""
+    for (i = 1; i <= filled; i++) bar = bar "\xe2\x96\x92"
+    for (i = filled+1; i <= 15; i++) bar = bar "\xe2\x96\x91"
+    printf "%3.0f%% %s", used, bar
+  }
+')
+
+# --- Date/Time ---
+datetime=$(date '+%b-%d %H:%M:%S')
+
+# --- Output ---
+printf "MEM: %s | SWP: %s | CPU:%s | %s" "$mem" "$swap" "$cpu_info" "$datetime"
