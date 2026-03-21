@@ -37,6 +37,7 @@ local plugins = {
   "slugbyte/lackluster.nvim",
   "water-sucks/darkrose.nvim",
   "github/copilot.vim",
+  "sasja-san/codered-nvim",
   {
     "hat0uma/csvview.nvim",
     ---@module "csvview"
@@ -370,21 +371,32 @@ vim.api.nvim_create_autocmd(
 -- Auto-reload files when Claude edits them
 vim.opt.autoread = true
 vim.opt.updatetime = 1000
-vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "CursorHold", "CursorHoldI" }, {
+vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave" }, {
   callback = function() vim.cmd("checktime") end,
 })
-local _claude_flashing = false
+-- Poll for file changes every second even when Neovim pane is unfocused (tmux)
+local _claude_timer = vim.loop.new_timer()
+_claude_timer:start(0, 750, vim.schedule_wrap(function()
+  vim.cmd("silent! checktime")
+end))
+
+local _claude_ns = vim.api.nvim_create_namespace("claude_key_listener")
+local _claude_changed = false
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function()
-    if _claude_flashing then return end
-    _claude_flashing = true
-    local orig = vim.api.nvim_get_hl(0, { name = "Normal" })
-    vim.api.nvim_set_hl(0, "Normal", { bg = "#550000", fg = "#000000" })
-    vim.defer_fn(function()
-      vim.api.nvim_set_hl(0, "Normal", orig)
-      vim.cmd("redraw")
-      _claude_flashing = false
-    end, 150)
+    if _claude_changed then return end
+    _claude_changed = true
+    local prev_scheme = vim.g.colors_name
+    vim.cmd.colorscheme("codered")
+    vim.on_key(function(key)
+      if key ~= "" then
+        vim.on_key(nil, _claude_ns)
+        _claude_changed = false
+        vim.schedule(function()
+          vim.cmd.colorscheme(prev_scheme)
+        end)
+      end
+    end, _claude_ns)
   end,
 })
 
