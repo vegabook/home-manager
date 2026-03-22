@@ -384,9 +384,9 @@ end))
 -- Snapshot buffer contents before reload so we can diff after
 local _claude_pre_lines = {}
 vim.api.nvim_create_autocmd("FileChangedShell", {
-  callback = function()
-    _claude_pre_lines[vim.api.nvim_get_current_buf()] =
-      vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  callback = function(args)
+    _claude_pre_lines[args.buf] =
+      vim.api.nvim_buf_get_lines(args.buf, 0, -1, false)
     vim.v.fcs_choice = "reload"
   end,
 })
@@ -398,12 +398,14 @@ local _claude_changed = false
 -- Highlight colour for changed/added lines
 vim.api.nvim_set_hl(0, "ClaudeDiffChange", { bg = "#3a1a1a" })
 
+-- test: diff jump should land cursor here now
+
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
-  callback = function()
+  callback = function(args)
     if _claude_changed then return end
     _claude_changed = true
 
-    local buf = vim.api.nvim_get_current_buf()
+    local buf = args.buf
     local prev_scheme = vim.g.colors_name
     vim.cmd.colorscheme("codered")
 
