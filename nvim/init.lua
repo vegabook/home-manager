@@ -380,19 +380,68 @@ _claude_timer:start(0, 750, vim.schedule_wrap(function()
   vim.cmd("silent! checktime")
 end))
 
+-- Skip the "file has changed on disk" prompt and silently reload
+-- Snapshot buffer contents before reload so we can diff after
+local _claude_pre_lines = {}
+vim.api.nvim_create_autocmd("FileChangedShell", {
+  callback = function()
+    _claude_pre_lines[vim.api.nvim_get_current_buf()] =
+      vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    vim.v.fcs_choice = "reload"
+  end,
+})
+
 local _claude_ns = vim.api.nvim_create_namespace("claude_key_listener")
+local _claude_diff_ns = vim.api.nvim_create_namespace("claude_diff_hl")
 local _claude_changed = false
+
+-- Highlight colour for changed/added lines
+vim.api.nvim_set_hl(0, "ClaudeDiffChange", { bg = "#3a1a1a" })
+
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function()
     if _claude_changed then return end
     _claude_changed = true
+
+    local buf = vim.api.nvim_get_current_buf()
     local prev_scheme = vim.g.colors_name
     vim.cmd.colorscheme("codered")
+
+    -- Diff old vs new and highlight changed lines
+    local old_lines = _claude_pre_lines[buf]
+    local new_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    _claude_pre_lines[buf] = nil
+    local first_change = nil
+
+    if old_lines then
+      local old_text = table.concat(old_lines, "\n") .. "\n"
+      local new_text = table.concat(new_lines, "\n") .. "\n"
+      local diff = vim.diff(old_text, new_text, { result_type = "indices" })
+      -- diff returns list of {old_start, old_count, new_start, new_count}
+      for _, hunk in ipairs(diff) do
+        local start = hunk[3]        -- new file start line
+        local count = hunk[4]        -- number of lines in new file
+        if count > 0 then
+          if not first_change then first_change = start end
+          for ln = start, start + count - 1 do
+            vim.api.nvim_buf_add_highlight(buf, _claude_diff_ns, "ClaudeDiffChange", ln - 1, 0, -1)
+          end
+        end
+      end
+    end
+
+    -- Jump cursor to first changed line
+    if first_change then
+      vim.api.nvim_win_set_cursor(0, { first_change, 0 })
+    end
+
+    -- On next keypress, clear highlights and restore colorscheme
     vim.on_key(function(key)
       if key ~= "" then
         vim.on_key(nil, _claude_ns)
         _claude_changed = false
         vim.schedule(function()
+          vim.api.nvim_buf_clear_namespace(buf, _claude_diff_ns, 0, -1)
           vim.cmd.colorscheme(prev_scheme)
         end)
       end
