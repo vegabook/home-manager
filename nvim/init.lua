@@ -395,11 +395,6 @@ local _claude_ns = vim.api.nvim_create_namespace("claude_key_listener")
 local _claude_diff_ns = vim.api.nvim_create_namespace("claude_diff_hl")
 local _claude_changed = false
 
--- Highlight colour for changed/added lines
-vim.api.nvim_set_hl(0, "ClaudeDiffChange", { bg = "#3a1a1a" })
-
--- test: diff jump should land cursor here now
-
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function(args)
     if _claude_changed then return end
@@ -408,6 +403,9 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
     local buf = args.buf
     local prev_scheme = vim.g.colors_name
     vim.cmd.colorscheme("codered")
+
+    -- Define after colorscheme switch so it doesn't get wiped
+    vim.api.nvim_set_hl(0, "ClaudeDiffChange", { bg = "#3a1a1a" })
 
     -- Diff old vs new and highlight changed lines
     local old_lines = _claude_pre_lines[buf]
@@ -423,11 +421,12 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
       for _, hunk in ipairs(diff) do
         local start = hunk[3]        -- new file start line
         local count = hunk[4]        -- number of lines in new file
-        if count > 0 then
-          if not first_change then first_change = start end
-          for ln = start, start + count - 1 do
-            vim.api.nvim_buf_add_highlight(buf, _claude_diff_ns, "ClaudeDiffChange", ln - 1, 0, -1)
-          end
+        -- For deletions (count==0), mark the line where content was removed
+        local mark_start = count > 0 and start or math.min(start, math.max(#new_lines, 1))
+        local mark_end = count > 0 and (start + count - 1) or mark_start
+        if not first_change then first_change = mark_start end
+        for ln = mark_start, mark_end do
+          vim.api.nvim_buf_add_highlight(buf, _claude_diff_ns, "ClaudeDiffChange", ln - 1, 0, -1)
         end
       end
     end
