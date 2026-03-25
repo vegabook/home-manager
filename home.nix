@@ -250,6 +250,6 @@ in {
   home.shellAliases = { 
     vim = "nvim"; 
     y = "yazi";
-    n = "nnn";
+    n = "nnn -S";
   };
 }
