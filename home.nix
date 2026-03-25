@@ -53,6 +53,7 @@ in {
     nodejs
     asciinema
     yazi
+    nnn
     nerd-fonts.iosevka
     nerd-fonts.comic-shanns-mono
     nerd-fonts.lekton
@@ -249,5 +250,6 @@ in {
   home.shellAliases = { 
     vim = "nvim"; 
     y = "yazi";
+    n = "nnn";
   };
 }
