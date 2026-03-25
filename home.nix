@@ -249,7 +249,7 @@ in {
 
   home.shellAliases = { 
     vim = "nvim"; 
-    n = "nnn -S -Q";S
-    y = "yazi"
+    n = "nnn -S -Q";
+    y = "yazi";
   };
 }
