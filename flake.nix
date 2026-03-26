@@ -32,7 +32,7 @@
         "bee" = mkHome "x86_64-linux" "bee";
         "logicLHR" = mkHome "x86_64-linux" "logicLHR";
         "rpi4" = mkHome "aarch64-linux" "rpi4";
-        "Mac4" = mkHome "aarch64-darwin" "Mac4";
+        "mac4" = mkHome "aarch64-darwin" "Mac4";
 	      "mac10" = mkHome "aarch64-darwin" "mac10";
       };
     };
