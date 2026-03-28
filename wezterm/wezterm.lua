@@ -8,7 +8,6 @@ config.font_size = 17.0
 config.enable_tab_bar = false
 config.color_scheme = 'Github'
 config.window_close_confirmation = 'NeverPrompt'
-config.default_prog = { '/bin/zsh', '-l', '-c', 'exec tmux new-session -A -s main' }
 config.front_end = 'WebGpu'
 -- Define the list of colors
 local colors = {
