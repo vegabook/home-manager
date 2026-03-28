@@ -178,6 +178,16 @@ in {
     enable = true;
   };
 
+  launchd.agents.wezterm-startup = lib.mkIf isDarwin {
+    enable = true;
+    config = {
+      Label = "com.local.wezterm-startup";
+      ProgramArguments = [ "${pkgs.wezterm}/bin/wezterm" "start" ];
+      RunAtLoad = true;
+      KeepAlive = false;
+    };
+  };
+
   programs.bash = {
     enable = true;
   };
