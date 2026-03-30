@@ -389,18 +389,22 @@ vim.api.nvim_create_autocmd("FileChangedShell", {
 
 local _claude_ns = vim.api.nvim_create_namespace("claude_key_listener")
 local _claude_changed = false
+local _claude_prev_scheme = nil
+local _claude_prev_bg = nil
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function()
     if _claude_changed then return end
     _claude_changed = true
-    local prev_scheme = vim.g.colors_name
+    _claude_prev_scheme = vim.g.colors_name
+    _claude_prev_bg = vim.opt.background:get()
     vim.cmd.colorscheme("codered")
     vim.on_key(function(key)
       if key ~= "" then
         vim.on_key(nil, _claude_ns)
-        _claude_changed = false
         vim.schedule(function()
-          vim.cmd.colorscheme(prev_scheme)
+          vim.opt.background = _claude_prev_bg
+          vim.cmd.colorscheme(_claude_prev_scheme)
+          _claude_changed = false
         end)
       end
     end, _claude_ns)
