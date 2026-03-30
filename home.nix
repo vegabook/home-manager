@@ -107,6 +107,7 @@ in {
       set -g status-bg ${tmuxColors.bg}
       set -g status-fg ${tmuxColors.fg}
       set -ag terminal-overrides ",*256col*:Tc"
+      set -g pane-border-lines double
       set -g status-interval 3
       set -g status-right "#(~/scripts/tmux-status)"
       set -g status-right-length 120
