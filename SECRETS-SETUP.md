@@ -25,6 +25,8 @@
 
 ### Add New Secret
 
+0. on Mac:  export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
+
 1. Edit encrypted file:
    ```bash
    nix-shell -p sops --run "sops secrets.yaml"
