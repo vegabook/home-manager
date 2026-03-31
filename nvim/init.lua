@@ -380,7 +380,10 @@ local _claude_prev_scheme = nil
 local _claude_prev_bg = nil
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function()
-    if _claude_changed then return end
+    if _claude_changed then
+      vim.cmd.colorscheme("codered")
+      return
+    end
     _claude_changed = true
     _claude_prev_scheme = vim.g.colors_name
     _claude_prev_bg = vim.opt.background:get()
