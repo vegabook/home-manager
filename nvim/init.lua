@@ -62,24 +62,6 @@ local plugins = {
   },
 
   {
-      "nvim-treesitter/nvim-treesitter",
-      lazy = false,
-      build = ":TSUpdate",
-      config = function()
-        require("nvim-treesitter").install {
-          "python", "c", "lua", "vim", "vimdoc",
-          "query", "erlang", "heex", "eex", "elixir", "javascript", "html", "r", "zig",
-        }
-        vim.api.nvim_create_autocmd("FileType", {
-          pattern = "*",
-          callback = function()
-            pcall(vim.treesitter.start)
-          end,
-        })
-      end,
-  },
-
-  {
     'nvim-telescope/telescope.nvim', branch = '0.1.x',
       dependencies = { 'nvim-lua/plenary.nvim' }
   },
@@ -101,6 +83,11 @@ local copilot_opts = {}
 --
 --
 require("lazy").setup(plugins, opts)
+
+-- treesitter highlighting (parsers installed via nix)
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function() pcall(vim.treesitter.start) end,
+})
 
 require("nvim-tree").setup({
   actions = {

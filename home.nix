@@ -69,7 +69,6 @@ in {
     nerd-fonts.daddy-time-mono
     nerd-fonts.envy-code-r
     nerd-fonts.fantasque-sans-mono
-    tree-sitter
     ripgrep
     claude-code
 
@@ -86,11 +85,20 @@ in {
     defaultEditor = true;
     vimAlias = true;
     viAlias = true;
+    plugins = with pkgs.vimPlugins; [
+      (nvim-treesitter.withPlugins (p: [
+        p.python p.c p.lua p.vim p.vimdoc
+        p.query p.erlang p.heex p.elixir
+        p.javascript p.html p.r p.zig
+      ]))
+    ];
   };
 
   programs.git = {
     enable = true;
     lfs.enable = true;
+    settings.user.name = "vegabook";
+    settings.user.email = "thomas.browne@mac.com";
   };
 
   programs.tmux = {
