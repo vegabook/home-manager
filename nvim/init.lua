@@ -77,12 +77,10 @@ vim.filetype.add({
 })
 
 -- copilot
-local opts = {}
-local copilot_opts = {}
 -- setup section ------------------------------------------
 --
 --
-require("lazy").setup(plugins, opts)
+require("lazy").setup(plugins)
 
 -- treesitter highlighting (parsers installed via nix)
 vim.api.nvim_create_autocmd("FileType", {
@@ -130,7 +128,6 @@ vim.opt.relativenumber = false
 vim.opt.wrap = false
 vim.opt.cursorline = true
 vim.opt.showmatch = true
-vim.opt.termguicolors = true
 vim.opt.mouse = 'a'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.expandtab = true
@@ -146,10 +143,6 @@ vim.opt.guicursor = {
   "a:blinkwait300-blinkoff200-blinkon220-Cursor/lCursor",
   "sm:block-blinkwait175-blinkoff150-blinkon175"
 }
-
-
-vim.g.mapleader = ","
-
 
 -- Mappings -------------------------
 
@@ -332,11 +325,7 @@ local function analyzeBufferContents()
     end
   end
 
-  -- always override colors whatever the colorscheme
-  vim.api.nvim_set_hl(0, "TabLineSel", {
-    fg = "#dddddd",        
-    bg = "#000000",       
-  })
+  -- keep the generic tab line style, but preserve the red selected-tab highlight
   vim.api.nvim_set_hl(0, "TabLine", {
     fg = "#999999",          
     bg = "#333333",         
@@ -419,4 +408,3 @@ vim.keymap.set("v", "<leader>yc", function()
   vim.fn.setreg("+", path .. "\n\n" .. content)
   print("✓ Yanked path + selection to clipboard for Claude")
 end, { desc = "Yank selection for Claude" })
-
