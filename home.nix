@@ -9,6 +9,13 @@ let
       rev = rev;
     };
   };
+  fromGit = rev: pname: url: pkgs.vimUtils.buildVimPluginFrom2Nix {
+    inherit pname;
+    version = rev;
+    src = builtins.fetchGit {
+      inherit url rev;
+    };
+  };
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
   tmuxColors = {
@@ -86,6 +93,25 @@ in {
     vimAlias = true;
     viAlias = true;
     plugins = with pkgs.vimPlugins; [
+      nightfox-nvim
+      moonlight-nvim
+      nvim-tree-lua
+      oxocarbon-nvim
+      bamboo-nvim
+      boo-colorscheme-nvim
+      lackluster-nvim
+      copilot-vim
+      csvview-nvim
+      plenary-nvim
+      telescope-nvim
+
+      (fromGitHub "0d6bab9626cf74dedc16997e9f8d8c356939e76d" "foxoman/vim-helix")
+      (fromGitHub "8b28cc9907256ff3761495aca3a9bb4e32c892b2" "mathofprimes/nightvision-nvim")
+      (fromGitHub "7d3ffd24460dafdcdbd50322442b8f4d1152c6f6" "water-sucks/darkrose.nvim")
+      (fromGitHub "11f2887f3f7b0b1a9abbcde8949bab0dce669efe" "sasja-san/codered-nvim")
+      (fromGitHub "df1d848328194249e68635f8b8c04641d9fa6bdc" "mlochbaum/BQN")
+      (fromGit "52d8b49f3ebc32d340e2e2b8dba1f6bbd1873b78" "nvim-bqn" "https://git.sr.ht/~detegr/nvim-bqn")
+
       (nvim-treesitter.withPlugins (p: [
         p.python p.c p.lua p.vim p.vimdoc
         p.query p.erlang p.heex p.elixir

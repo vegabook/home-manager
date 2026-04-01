@@ -1,16 +1,3 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
 -- map leader 
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
@@ -21,53 +8,6 @@ vim.g.loaded_netrwPlugin = 1
 if vim.fn.has("termguicolors") then
   vim.opt.termguicolors = true
 end
--- lazy plugins 
---
-local plugins = {
-  "EdenEast/nightfox.nvim",
-  "foxoman/vim-helix",
-  "shaunsingh/moonlight.nvim",
-  "nvim-tree/nvim-tree.lua",
-  "nyoom-engineering/oxocarbon.nvim",
-  "mathofprimes/nightvision-nvim",
-  "ribru17/bamboo.nvim",
-  "rockerBOO/boo-colorscheme-nvim",
-  "mlochbaum/BQN",
-	"https://git.sr.ht/~detegr/nvim-bqn",
-  "slugbyte/lackluster.nvim",
-  "water-sucks/darkrose.nvim",
-  "github/copilot.vim",
-  "sasja-san/codered-nvim",
-  {
-    "hat0uma/csvview.nvim",
-    ---@module "csvview"
-    ---@type CsvView.Options
-    opts = {
-      parser = { comments = { "#", "//" } },
-      keymaps = {
-        -- Text objects for selecting fields
-        textobject_field_inner = { "if", mode = { "o", "x" } },
-        textobject_field_outer = { "af", mode = { "o", "x" } },
-        -- Excel-like navigation:
-        -- Use <Tab> and <S-Tab> to move horizontally between fields.
-        -- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
-        -- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
-        jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
-        jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
-        jump_next_row = { "<Enter>", mode = { "n", "v" } },
-        jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
-      },
-    },
-    cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
-  },
-
-  {
-    'nvim-telescope/telescope.nvim', branch = '0.1.x',
-      dependencies = { 'nvim-lua/plenary.nvim' }
-  },
-
-}
-
 -- add bqn filetype
 --
 vim.filetype.add({
@@ -76,11 +16,18 @@ vim.filetype.add({
   },
 })
 
--- copilot
 -- setup section ------------------------------------------
---
---
-require("lazy").setup(plugins)
+require("csvview").setup({
+  parser = { comments = { "#", "//" } },
+  keymaps = {
+    textobject_field_inner = { "if", mode = { "o", "x" } },
+    textobject_field_outer = { "af", mode = { "o", "x" } },
+    jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
+    jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
+    jump_next_row = { "<Enter>", mode = { "n", "v" } },
+    jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
+  },
+})
 
 -- enable classic syntax groups alongside treesitter so colorschemes have
 -- something consistent to target even when TS coverage is incomplete
