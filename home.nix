@@ -19,7 +19,7 @@ let
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
   tmuxColors = {
-    mac10      = { bg = "colour004"; fg = "colour124"; };
+    mac10      = { bg = "colour004"; fg = "colour253"; };
     mac4      = { bg = "colour204"; fg = "colour255"; };
     bee      = { bg = "colour240"; fg = "colour249"; };
     logicLHR = { bg = "colour9";   fg = "colour255"; };
