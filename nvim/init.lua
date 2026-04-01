@@ -82,9 +82,22 @@ vim.filetype.add({
 --
 require("lazy").setup(plugins)
 
+-- enable classic syntax groups alongside treesitter so colorschemes have
+-- something consistent to target even when TS coverage is incomplete
+vim.cmd("syntax enable")
+
 -- treesitter highlighting (parsers installed via nix)
 vim.api.nvim_create_autocmd("FileType", {
-  callback = function() pcall(vim.treesitter.start) end,
+  callback = function(args)
+    local buf = args.buf
+    local ft = vim.bo[buf].filetype
+
+    if ft ~= "" and vim.bo[buf].syntax == "" then
+      vim.bo[buf].syntax = ft
+    end
+
+    pcall(vim.treesitter.start, buf)
+  end,
 })
 
 require("nvim-tree").setup({
