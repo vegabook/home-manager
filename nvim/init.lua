@@ -25,7 +25,9 @@ end
 --
 local plugins = {
   "EdenEast/nightfox.nvim",
+  "foxoman/vim-helix",
   "shaunsingh/moonlight.nvim",
+  "nvim-tree/nvim-tree.lua",
   "nyoom-engineering/oxocarbon.nvim",
   "mathofprimes/nightvision-nvim",
   "ribru17/bamboo.nvim",
@@ -36,7 +38,6 @@ local plugins = {
   "water-sucks/darkrose.nvim",
   "github/copilot.vim",
   "sasja-san/codered-nvim",
- 
   {
     "hat0uma/csvview.nvim",
     ---@module "csvview"
@@ -44,8 +45,13 @@ local plugins = {
     opts = {
       parser = { comments = { "#", "//" } },
       keymaps = {
+        -- Text objects for selecting fields
         textobject_field_inner = { "if", mode = { "o", "x" } },
         textobject_field_outer = { "af", mode = { "o", "x" } },
+        -- Excel-like navigation:
+        -- Use <Tab> and <S-Tab> to move horizontally between fields.
+        -- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
+        -- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
         jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
         jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
         jump_next_row = { "<Enter>", mode = { "n", "v" } },
@@ -60,26 +66,6 @@ local plugins = {
       dependencies = { 'nvim-lua/plenary.nvim' }
   },
 
-  {
-    "mikavilpas/yazi.nvim",
-    version = "*",
-    event = "VeryLazy",
-    dependencies = {
-      { "nvim-lua/plenary.nvim", lazy = true },
-    },
-    keys = {
-      { "<leader>yf", "<cmd>Yazi<cr>", mode = { "n", "v" }, desc = "Open yazi at the current file" },
-      { "<leader>yd", "<cmd>Yazi cwd<cr>", desc = "Open yazi in nvim's working directory" },
-      { "<c-up>", "<cmd>Yazi toggle<cr>", desc = "Resume the last yazi session" },
-    },
-    opts = {
-      open_for_directories = false,
-      keymaps = {
-        show_help = "<f1>",
-      },
-    },
-  },
-
 }
 
 -- add bqn filetype
@@ -90,13 +76,52 @@ vim.filetype.add({
   },
 })
 
+-- copilot
+local opts = {}
+local copilot_opts = {}
 -- setup section ------------------------------------------
-require("lazy").setup(plugins)
+--
+--
+require("lazy").setup(plugins, opts)
 
 -- treesitter highlighting (parsers installed via nix)
 vim.api.nvim_create_autocmd("FileType", {
   callback = function() pcall(vim.treesitter.start) end,
 })
+
+require("nvim-tree").setup({
+  actions = {
+    open_file = {
+        quit_on_open = true,
+    },
+  },
+  sort = {
+    sorter = "case_sensitive",
+  },
+  view = {
+    width = 30,
+    adaptive_size = true,
+  },
+  renderer = {
+    group_empty = true,
+    icons = {
+      show = {
+        git = false,
+        folder = false,
+        file = false,
+        folder_arrow = false,
+      },
+    },
+  },
+  git = {
+    enable = true,
+  },
+  filters = {
+    dotfiles = true,
+    git_ignored = false,
+  },
+})
+
 
 -- Global settings -----------------------
 vim.opt.modifiable = true
@@ -105,6 +130,7 @@ vim.opt.relativenumber = false
 vim.opt.wrap = false
 vim.opt.cursorline = true
 vim.opt.showmatch = true
+vim.opt.termguicolors = true
 vim.opt.mouse = 'a'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.expandtab = true
@@ -122,8 +148,12 @@ vim.opt.guicursor = {
 }
 
 
+vim.g.mapleader = ","
+
+
 -- Mappings -------------------------
 
+  vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
   vim.keymap.set('n', '<Right>', ':tabn<cr>') 
   vim.keymap.set('n', '<Left>', ':tabp<cr>')
 
@@ -143,144 +173,133 @@ vim.opt.guicursor = {
 
   -- Buffer filetype settings
 
-  local ignored_filetypes = {
-    ["nvimtree"] = true,
-    ["TelescopePrompt"] = true,
-    ["lazy"] = true,
-    ["mason"] = true,
-    ["alpha"] = true,
-    ["dashboard"] = true,
-    ["neo-tree"] = true,
-    ["oil"] = true,
-    ["toggleterm"] = true,
-    ["minifiles"] = true,
-    ["notify"] = true,
-    ["fzf"] = true,
-  }
+  vim.api.nvim_create_autocmd({"BufEnter", "BufNewFile", "BufRead"}, {
+    callback = function()
+      local ft = vim.bo.filetype
+      local file_ext = vim.fn.expand("%:e")
+      local buftype  = vim.bo.buftype
 
-  local ignored_buftypes = {
-    ["nofile"] = true,
-    ["prompt"] = true,
-    ["terminal"] = true,
-    ["help"] = true,
-  }
+      -- List of filetypes and buftypes to not change colorscheme for
+      local ignored_filetypes = {
+        ["nvimtree"]       = true,
+        ["TelescopePrompt"]= true,
+        ["lazy"]           = true,
+        ["mason"]          = true,
+        ["alpha"]          = true,
+        ["dashboard"]      = true,
+        ["neo-tree"]       = true,
+        ["oil"]            = true,
+        ["toggleterm"]     = true,
+        ["minifiles"]      = true,
+        ["notify"]         = true,
+        ["fzf"]            = true,
+      }
 
-  local function set_colorscheme(name)
-    local ok, err = pcall(vim.cmd.colorscheme, name)
-    if not ok then
-      vim.notify("colorscheme failed: " .. name .. "\n" .. err, vim.log.levels.WARN)
-    end
-  end
+      local ignored_buftypes = {
+        ["nofile"]   = true,
+        ["prompt"]   = true,
+        ["terminal"] = true,
+        ["help"]     = true,
+      }
 
-  local function apply_buffer_filetype_settings()
-    local ft = vim.bo.filetype
-    local file_ext = vim.fn.expand("%:e")
-    local buftype = vim.bo.buftype
+      if ignored_filetypes[ft] or ignored_buftypes[buftype] then
+        return  -- skip if filetype shouldn't change colour scheme
+      end
+      
+      if ft == "python" then
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.tabstop = 4
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("oxocarbon")
 
-    if ft == "" or ignored_filetypes[ft] or ignored_buftypes[buftype] then
-      return
-    end
+      elseif ft == "elixir" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        
+        if file_ext == "ex" then
+          local file_path = vim.fn.expand("%:p:h")
+          if file_path:find("/deps/") then
+            require("boo-colorscheme").use({
+              italic = true,
+              theme = "crimson_moonlight",
+            })
+          else
+            require("boo-colorscheme").use({
+              italic = true,
+              theme = "boo",
+            })
+          end
 
-    if ft == "python" then
-      vim.opt_local.shiftwidth = 4
-      vim.opt_local.tabstop = 4
-      vim.opt.background = "dark"
-      set_colorscheme("oxocarbon")
-
-    elseif ft == "elixir" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-
-      if file_ext == "ex" then
-        local file_path = vim.fn.expand("%:p:h")
-        if file_path:find("/deps/") then
-          require("boo-colorscheme").use({
-            italic = true,
-            theme = "crimson_moonlight",
-          })
-        else
-          require("boo-colorscheme").use({
-            italic = true,
-            theme = "boo",
-          })
+        elseif file_ext == "exs" then
+          vim.g.nv_contrast = "medium"
+          vim.cmd.colorscheme("nightvision")
         end
 
-      elseif file_ext == "exs" then
-        vim.g.nv_contrast = "medium"
-        set_colorscheme("nightvision")
+      elseif ft == "typst" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.cmd.colorscheme("colorful")
+
+      elseif ft == "markdown" then
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.cmd.colorscheme("twilight")
+        vim.opt.background = "light"
+
+      elseif ft == "r" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("3dglasses")
+
+      elseif ft == "json" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("dw_purple")
+
+      elseif ft == "swift" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("blue-mood")
+
+      elseif ft == "zig" then
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.tabstop = 4
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("darkrose")
+
+      elseif ft == "html" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("atom")
+
+      elseif ft == "bqn" then
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("base16-greenscreen")
+
+      else
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme("revolutions")
+
       end
 
-    elseif ft == "typst" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      set_colorscheme("colorful")
-
-    elseif ft == "markdown" then
-      vim.opt_local.wrap = true
-      vim.opt_local.linebreak = true
-      vim.opt.background = "light"
-      set_colorscheme("twilight")
-
-    elseif ft == "r" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      set_colorscheme("3dglasses")
-
-    elseif ft == "json" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      set_colorscheme("dw_purple")
-
-    elseif ft == "swift" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      set_colorscheme("blue-mood")
-
-    elseif ft == "zig" then
-      vim.opt_local.shiftwidth = 4
-      vim.opt_local.tabstop = 4
-      vim.opt.background = "dark"
-      set_colorscheme("darkrose")
-
-    elseif ft == "html" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      set_colorscheme("atom")
-
-    elseif ft == "bqn" then
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      set_colorscheme("base16-greenscreen")
-
-    else
-      vim.opt_local.shiftwidth = 2
-      vim.opt_local.tabstop = 2
-      vim.opt.background = "dark"
-      set_colorscheme("revolutions")
-    end
-
-    vim.api.nvim_set_hl(0, "TabLineSel", {
-      fg = "#ff0000",
-      bg = "#000000",
+        vim.api.nvim_set_hl(0, "TabLineSel", {
+      fg = "#ff0000",          -- bright red foreground
+      bg = "#000000",          -- black background
+      -- bold = true,          -- remove or comment this if you don't want bold either
+      -- No gui= at all → defaults to normal/plain
+      -- OR explicitly: gui = "none"  (same effect)
     })
-  end
 
-  local filetype_theme_group = vim.api.nvim_create_augroup("filetype_theme_settings", { clear = true })
-
-  vim.api.nvim_create_autocmd("FileType", {
-    group = filetype_theme_group,
-    callback = apply_buffer_filetype_settings,
-  })
-
-  vim.api.nvim_create_autocmd("BufEnter", {
-    group = filetype_theme_group,
-    callback = apply_buffer_filetype_settings,
+    end,
   })
 
 
@@ -400,3 +419,4 @@ vim.keymap.set("v", "<leader>yc", function()
   vim.fn.setreg("+", path .. "\n\n" .. content)
   print("✓ Yanked path + selection to clipboard for Claude")
 end, { desc = "Yank selection for Claude" })
+
