@@ -1,0 +1,5 @@
+# Evicts all local copies of icloud files
+# cd to icloud drive
+cd ~/Library/Mobile\ Documents/com~apple~CloudDocs/
+# evict all files
+find . -type f -exec brctl evict '{}' \;
