@@ -24,20 +24,18 @@ end
 -- lazy plugins 
 --
 local plugins = {
-  "EdenEast/nightfox.nvim",
-  "foxoman/vim-helix",
-  "shaunsingh/moonlight.nvim",
-  "nvim-tree/nvim-tree.lua",
-  "nyoom-engineering/oxocarbon.nvim",
-  "mathofprimes/nightvision-nvim",
-  "ribru17/bamboo.nvim",
-  "rockerBOO/boo-colorscheme-nvim",
+  { "EdenEast/nightfox.nvim", lazy = true },
+  { "shaunsingh/moonlight.nvim", lazy = true },
+  { "nyoom-engineering/oxocarbon.nvim", lazy = true },
+  { "mathofprimes/nightvision-nvim", lazy = true },
+  { "ribru17/bamboo.nvim", lazy = true },
+  { "rockerBOO/boo-colorscheme-nvim", lazy = true },
   "mlochbaum/BQN",
 	"https://git.sr.ht/~detegr/nvim-bqn",
-  "slugbyte/lackluster.nvim",
-  "water-sucks/darkrose.nvim",
+  { "slugbyte/lackluster.nvim", lazy = true },
+  { "water-sucks/darkrose.nvim", lazy = true },
   "github/copilot.vim",
-  "sasja-san/codered-nvim",
+  { "sasja-san/codered-nvim", lazy = true },
   {
     "hat0uma/csvview.nvim",
     ---@module "csvview"
@@ -66,6 +64,26 @@ local plugins = {
       dependencies = { 'nvim-lua/plenary.nvim' }
   },
 
+  {
+    "mikavilpas/yazi.nvim",
+    version = "*",
+    event = "VeryLazy",
+    dependencies = {
+      { "nvim-lua/plenary.nvim", lazy = true },
+    },
+    keys = {
+      { "<leader>yf", "<cmd>Yazi<cr>", mode = { "n", "v" }, desc = "Open yazi at the current file" },
+      { "<leader>yd", "<cmd>Yazi cwd<cr>", desc = "Open yazi in nvim's working directory" },
+      { "<c-up>", "<cmd>Yazi toggle<cr>", desc = "Resume the last yazi session" },
+    },
+    opts = {
+      open_for_directories = false,
+      keymaps = {
+        show_help = "<f1>",
+      },
+    },
+  },
+
 }
 
 -- add bqn filetype
@@ -76,52 +94,13 @@ vim.filetype.add({
   },
 })
 
--- copilot
-local opts = {}
-local copilot_opts = {}
 -- setup section ------------------------------------------
---
---
-require("lazy").setup(plugins, opts)
+require("lazy").setup(plugins)
 
 -- treesitter highlighting (parsers installed via nix)
 vim.api.nvim_create_autocmd("FileType", {
   callback = function() pcall(vim.treesitter.start) end,
 })
-
-require("nvim-tree").setup({
-  actions = {
-    open_file = {
-        quit_on_open = true,
-    },
-  },
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 30,
-    adaptive_size = true,
-  },
-  renderer = {
-    group_empty = true,
-    icons = {
-      show = {
-        git = false,
-        folder = false,
-        file = false,
-        folder_arrow = false,
-      },
-    },
-  },
-  git = {
-    enable = true,
-  },
-  filters = {
-    dotfiles = true,
-    git_ignored = false,
-  },
-})
-
 
 -- Global settings -----------------------
 vim.opt.modifiable = true
@@ -130,7 +109,6 @@ vim.opt.relativenumber = false
 vim.opt.wrap = false
 vim.opt.cursorline = true
 vim.opt.showmatch = true
-vim.opt.termguicolors = true
 vim.opt.mouse = 'a'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.expandtab = true
@@ -148,12 +126,8 @@ vim.opt.guicursor = {
 }
 
 
-vim.g.mapleader = ","
-
-
 -- Mappings -------------------------
 
-  vim.keymap.set('n', '<Leader>ne', '<cmd>NvimTreeOpen<cr>')
   vim.keymap.set('n', '<Right>', ':tabn<cr>') 
   vim.keymap.set('n', '<Left>', ':tabp<cr>')
 
