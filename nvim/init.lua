@@ -24,40 +24,40 @@ end
 -- lazy plugins 
 --
 local plugins = {
-  { "EdenEast/nightfox.nvim", lazy = true },
-  { "shaunsingh/moonlight.nvim", lazy = true },
-  { "nyoom-engineering/oxocarbon.nvim", lazy = true },
-  { "mathofprimes/nightvision-nvim", lazy = true },
-  { "ribru17/bamboo.nvim", lazy = true },
-  { "rockerBOO/boo-colorscheme-nvim", lazy = true },
+  "EdenEast/nightfox.nvim",
+  "shaunsingh/moonlight.nvim",
+  "nyoom-engineering/oxocarbon.nvim",
+  "mathofprimes/nightvision-nvim",
+  "ribru17/bamboo.nvim",
+  "rockerBOO/boo-colorscheme-nvim",
   "mlochbaum/BQN",
 	"https://git.sr.ht/~detegr/nvim-bqn",
-  { "slugbyte/lackluster.nvim", lazy = true },
-  { "water-sucks/darkrose.nvim", lazy = true },
+  "slugbyte/lackluster.nvim",
+  "water-sucks/darkrose.nvim",
   "github/copilot.vim",
-  { "sasja-san/codered-nvim", lazy = true },
-  {
-    "hat0uma/csvview.nvim",
-    ---@module "csvview"
-    ---@type CsvView.Options
-    opts = {
-      parser = { comments = { "#", "//" } },
-      keymaps = {
-        -- Text objects for selecting fields
-        textobject_field_inner = { "if", mode = { "o", "x" } },
-        textobject_field_outer = { "af", mode = { "o", "x" } },
-        -- Excel-like navigation:
-        -- Use <Tab> and <S-Tab> to move horizontally between fields.
-        -- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
-        -- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
-        jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
-        jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
-        jump_next_row = { "<Enter>", mode = { "n", "v" } },
-        jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
-      },
+  "sasja-san/codered-nvim",
+ 
+  "hat0uma/csvview.nvim",
+  ---@module "csvview"
+  ---@type CsvView.Options
+  opts = {
+    parser = { comments = { "#", "//" } },
+    keymaps = {
+      -- Text objects for selecting fields
+      textobject_field_inner = { "if", mode = { "o", "x" } },
+      textobject_field_outer = { "af", mode = { "o", "x" } },
+      -- Excel-like navigation:
+      -- Use <Tab> and <S-Tab> to move horizontally between fields.
+      -- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
+      -- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
+      jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
+      jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
+      jump_next_row = { "<Enter>", mode = { "n", "v" } },
+      jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
     },
-    cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
   },
+  cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
+},
 
   {
     'nvim-telescope/telescope.nvim', branch = '0.1.x',
