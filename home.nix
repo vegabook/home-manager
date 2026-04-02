@@ -146,6 +146,8 @@ in {
       set -g status-interval 3
       set -g status-right "#(~/scripts/tmux-status)"
       set -g status-right-length 120
+      set -g allow-passthrough all
+      set -ga terminal-features ",*:sixel"
     '';
   };
 
