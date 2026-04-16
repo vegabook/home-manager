@@ -61,7 +61,6 @@ in {
     nodejs
     asciinema
     nnn
-    yazi
     nerd-fonts.iosevka
     nerd-fonts.comic-shanns-mono
     nerd-fonts.lekton
@@ -184,6 +183,23 @@ in {
   } else {
     enable = false;
   };
+
+
+  programs.yazi = {
+    enable = true;
+    plugins.full-border = pkgs.yaziPlugins.full-border;
+    settings = {
+      mgr = {
+        ratio = [1, 3, 4];      # ← good balance: smaller middle, bigger preview
+      };
+    };
+    initLua = ''
+      require("full-border"):setup {
+        type = ui.Border.ROUNDED,   -- or ui.Border.PLAIN if you prefer simple lines
+      }
+    '';
+  };
+
     
   
   programs.fzf = {
@@ -276,10 +292,6 @@ in {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     "./.config/claude" = {
       source = ./claude;
-      recursive = true;
-    };
-    "./.config/yazi" = {
-      source = ./yazi;
       recursive = true;
     };
     "./scripts/tmux-status" = {
