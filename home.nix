@@ -278,6 +278,10 @@ in {
       source = ./claude;
       recursive = true;
     };
+    "./.config/yazi" = {
+      source = ./yazi;
+      recursive = true;
+    };
     "./scripts/tmux-status" = {
       source = if isDarwin then ./scripts/tmux-status-darwin else ./scripts/tmux-status;
       executable = true;
