@@ -190,18 +190,16 @@ in {
     plugins.full-border = pkgs.yaziPlugins.full-border;
     settings = {
       mgr = {
-        ratio = [1, 3, 4];      # ← good balance: smaller middle, bigger preview
+        ratio = [ 1 3 4 ];   # ← smaller middle pane, bigger preview
       };
     };
     initLua = ''
       require("full-border"):setup {
-        type = ui.Border.ROUNDED,   -- or ui.Border.PLAIN if you prefer simple lines
+        type = ui.Border.ROUNDED,
       }
     '';
-  };
+  }; 
 
-    
-  
   programs.fzf = {
     enable = true;
   };
