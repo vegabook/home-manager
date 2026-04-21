@@ -296,6 +296,9 @@ in {
       source = if isDarwin then ./scripts/tmux-status-darwin else ./scripts/tmux-status;
       executable = true;
     };
+    ".inputrc".text = ''
+      set editing-mode vi
+    '';
   };
 
 
