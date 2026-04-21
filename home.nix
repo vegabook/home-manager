@@ -1,7 +1,7 @@
 { config, pkgs, lib, hostname ? "unknown", ... }:
 
 let
-  fromGitHub = rev: repo: pkgs.vimUtils.buildVimPluginFrom2Nix {
+  fromGitHub = rev: repo: pkgs.vimUtils.buildVimPlugin {
     pname = "${lib.strings.sanitizeDerivationName repo}";
     version = rev;
     src = builtins.fetchGit {
@@ -9,7 +9,7 @@ let
       rev = rev;
     };
   };
-  fromGit = rev: pname: url: pkgs.vimUtils.buildVimPluginFrom2Nix {
+  fromGit = rev: pname: url: pkgs.vimUtils.buildVimPlugin {
     inherit pname;
     version = rev;
     src = builtins.fetchGit {
@@ -117,6 +117,8 @@ in {
         p.javascript p.html p.r p.zig
       ]))
     ];
+    withRuby = false;
+    withPython3 = false;
   };
 
   programs.git = {
@@ -124,6 +126,7 @@ in {
     lfs.enable = true;
     settings.user.name = "vegabook";
     settings.user.email = "thomas.browne@mac.com";
+    signing.format = null;
   };
 
   programs.tmux = {
