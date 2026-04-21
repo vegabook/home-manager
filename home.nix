@@ -202,6 +202,7 @@ in {
         type = ui.Border.ROUNDED,
       }
     '';
+    shellWrapperName = "yy";
   }; 
 
   programs.fzf = {
@@ -309,6 +310,5 @@ in {
   home.shellAliases = { 
     vim = "nvim"; 
     n = "nnn -S -Q";
-    y = "yazi";
   };
 }
