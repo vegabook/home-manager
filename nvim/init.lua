@@ -128,6 +128,7 @@ vim.opt.guicursor = {
 
   vim.api.nvim_create_autocmd({"BufEnter", "BufNewFile", "BufRead"}, {
     callback = function()
+      if vim.g._claude_changed then return end
       local ft = vim.bo.filetype
       local file_ext = vim.fn.expand("%:e")
       local buftype  = vim.bo.buftype
@@ -259,6 +260,7 @@ vim.opt.guicursor = {
 -- colorscheme per file in first 5 lines
 --
 local function analyzeBufferContents()
+  if vim.g._claude_changed then return end
   -- now check for colorscheme or vimcmd in first 5 lines
   local lines = vim.api.nvim_buf_get_lines(0, 0, 5, false)
   -- Example: Check if a specific string exists in the file
@@ -324,29 +326,59 @@ vim.api.nvim_create_autocmd("FileChangedShell", {
 })
 
 local _claude_ns = vim.api.nvim_create_namespace("claude_key_listener")
-local _claude_changed = false
+local _claude_files = {}
 local _claude_prev_scheme = nil
 local _claude_prev_bg = nil
+local _claude_gen = 0
+local _claude_print_pending = false
+
+local function _claude_announce()
+  if _claude_print_pending then return end
+  _claude_print_pending = true
+  vim.schedule(function()
+    _claude_print_pending = false
+    local list = vim.tbl_keys(_claude_files)
+    table.sort(list)
+    vim.api.nvim_echo({
+      { "[codered] ", "ErrorMsg" },
+      { "changed on disk: " .. table.concat(list, ", ") },
+    }, true, {})
+  end)
+end
+
+local function _claude_arm_listener(my_gen)
+  vim.on_key(function(key)
+    if key ~= "" then
+      vim.on_key(nil, _claude_ns)
+      vim.schedule(function()
+        if my_gen ~= _claude_gen then return end
+        vim.g._claude_changed = false
+        _claude_files = {}
+        if _claude_prev_scheme then
+          vim.opt.background = _claude_prev_bg
+          pcall(vim.cmd.colorscheme, _claude_prev_scheme)
+        end
+        vim.api.nvim_exec_autocmds("BufEnter", {})
+      end)
+    end
+  end, _claude_ns)
+end
+
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   callback = function()
-    if _claude_changed then
-      vim.cmd.colorscheme("codered")
-      return
+    _claude_gen = _claude_gen + 1
+    local fname = vim.fn.expand("<afile>")
+    if fname and fname ~= "" then
+      _claude_files[vim.fn.fnamemodify(fname, ":~:.")] = true
     end
-    _claude_changed = true
-    _claude_prev_scheme = vim.g.colors_name
-    _claude_prev_bg = vim.opt.background:get()
-    vim.cmd.colorscheme("codered")
-    vim.on_key(function(key)
-      if key ~= "" then
-        vim.on_key(nil, _claude_ns)
-        vim.schedule(function()
-          vim.opt.background = _claude_prev_bg
-          vim.cmd.colorscheme(_claude_prev_scheme)
-          _claude_changed = false
-        end)
-      end
-    end, _claude_ns)
+    if not vim.g._claude_changed then
+      vim.g._claude_changed = true
+      _claude_prev_scheme = vim.g.colors_name
+      _claude_prev_bg = vim.opt.background:get()
+    end
+    pcall(vim.cmd.colorscheme, "codered")
+    _claude_announce()
+    _claude_arm_listener(_claude_gen)
   end,
 })
 
