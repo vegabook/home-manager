@@ -98,7 +98,6 @@ in {
       bamboo-nvim
       boo-colorscheme-nvim
       lackluster-nvim
-      copilot-vim
       csvview-nvim
       plenary-nvim
       telescope-nvim
