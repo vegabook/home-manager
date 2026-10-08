@@ -163,7 +163,6 @@ in {
     initContent = ''
       bindkey -v # vi mode on command line
       make_superscript () { sed 'y/0123456789/⁰¹²³⁴⁵⁶⁷⁸⁹/' <<< $SHLVL; };
-      direnv_yes () { env | grep DIRENV_DIR | wc -l | sed 's/[0 ]//g'; };
       nixshell_yes () { env | grep IN_NIX_SHELL | wc -l | sed 's/[0 ]//g'; };
       echoer () { export PROMPT="%f%F{yellow}$(nixshell_yes)%f%F{red}$(make_superscript)%f%F{green}%n@%m %F{$016}%~%f %F{green}❯%f " };
       precmd_functions+=(echoer);
@@ -217,10 +216,6 @@ in {
   };
 
   programs.htop = {
-    enable = true;
-  };
-
-  programs.direnv = {
     enable = true;
   };
 
