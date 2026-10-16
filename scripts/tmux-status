@@ -47,13 +47,20 @@ fi
 cp "$curr_file" "$STATEFILE"
 rm -f "$curr_file"
 
-# --- CPU Temp (average of cores) ---
-avg_temp=$(sensors 2>/dev/null | awk '/^Core [0-3]:/ {
-  gsub(/\+/,"",$3); gsub(/°C/,"",$3); sum+=int($3); count++
-}
+# --- CPU Temp (read from hwmon in sysfs) ---
+# Intel coretemp: average of "Core N"; AMD k10temp / Raspberry Pi cpu_thermal: temp1
+avg_temp=$(for h in /sys/class/hwmon/hwmon*; do
+  case "$(cat "$h/name" 2>/dev/null)" in
+    coretemp)
+      for l in "$h"/temp*_label; do
+        case "$(cat "$l")" in Core*) cat "${l%_label}_input" ;; esac
+      done ;;
+    k10temp|cpu_thermal) cat "$h/temp1_input" ;;
+  esac
+done | awk '{ sum+=$1; count++ }
 END {
   if (count > 0) {
-    avg = sum/count
+    avg = sum/count/1000
     if (avg >= 90) printf "#[fg=colour196]%d°#[fg=default]", avg
     else printf "%d°", avg
   } else printf "?°"
