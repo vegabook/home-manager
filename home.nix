@@ -24,6 +24,7 @@ let
     bee      = { bg = "colour240"; fg = "colour249"; };
     logicLHR = { bg = "colour9";   fg = "colour255"; };
     rpi4     = { bg = "colour40";  fg = "colour0"; };
+    caracas  = { bg = "colour46";  fg = "colour0"; };
   }.${hostname} or { bg = "colour255"; fg = "colour0"; };
 in {
   # are we on Linux?
