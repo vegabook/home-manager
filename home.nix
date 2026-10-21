@@ -77,6 +77,7 @@ in {
     nerd-fonts.envy-code-r
     nerd-fonts.fantasque-sans-mono
     ripgrep
+    claude-code
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
