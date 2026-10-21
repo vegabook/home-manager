@@ -16,8 +16,8 @@ let
       inherit url rev;
     };
   };
-  isLinux = pkgs.stdenv.isLinux;
-  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   tmuxColors = {
     mac10      = { bg = "colour004"; fg = "colour253"; };
     mac4      = { bg = "colour204"; fg = "colour255"; };
